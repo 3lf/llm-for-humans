@@ -331,7 +331,7 @@
 
 <div align="center">
 
-## ۱. Temperature (خلاقیت) 🌡️
+### ۱. Temperature (خلاقیت) 🌡️
 
 </div>
 
@@ -352,7 +352,7 @@
 
 <div align="center">
 
-## ۲. Top-p (تنوع کلمات) 🎲
+### ۲. Top-p (تنوع کلمات) 🎲
 
 </div>
 
@@ -373,7 +373,7 @@
 
 <div align="center">
 
-## ۳. Frequency Penalty (جلوگیری از تکرار کلمه) 🔄
+### ۳. Frequency Penalty (جلوگیری از تکرار کلمه) 🔄
 
 </div>
 
@@ -394,7 +394,7 @@
 
 <div align="center">
 
-## ۴. Presence Penalty (جلوگیری از تکرار موضوع) 🚫
+### ۴. Presence Penalty (جلوگیری از تکرار موضوع) 🚫
 
 </div>
 
@@ -415,7 +415,7 @@
 
 <div align="center">
 
-## 🤔 فرق این پارامترها چیه؟
+### 🤔 فرق این پارامترها چیه؟
 
 </div>
 
@@ -428,7 +428,7 @@
 
 <div align="center">
 
-## مثال کلی 📌
+### مثال کلی 📌
 
 </div>
 
