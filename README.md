@@ -1311,135 +1311,176 @@ User Prompt:
 
 <div align="center">
 
-# دو روش ساخت پرامپت (با کمک ابزار ها) 🚀
+# دو روش ساخت پرامپت (با کمک ابزارها) 🚀
 
 </div>
 
-در این بخش می‌خوایم دو تا از تجربه‌های شخصی رو با شما به اشتراک بذاریم که ممکنه وقتی این پیامو می‌خونید خیلی کاربردی
-نباشه، ولی الان جواب می‌ده و خیلی خوبه.
-
-<br>
-
-### 1. استفاده از پرامپت‌های پرامپت‌ساز 🛠️
-
-یکی از روش‌های کاربردی، استفاده از پرامپت‌هایی است که به خود مدل کمک می‌کنه تا پرامپت‌های بهتری بنویسه. به عبارت دیگه،
-مدل رو به عنوان یک "پرامپت اینجینیر" به کار می‌گیریم تا بهترین پرامپت‌ها رو برای ما بسازه.
-
-#### مثال:
-
-```markdown
-Your task is to function as a prompt engineer, which involves crafting detailed and clear prompts for a large language
-model (LLM) such as ChatGPT. The aim is to enhance comprehension and interaction with the model. To do this effectively,
-provide a well-structured and insightful prompt that guides the LLM in understanding the task at hand about TOPIC below.
-
-This includes specifying the context, defining any technical terms, setting clear expectations for the output, and
-including examples if necessary. Your goal is to ensure that the prompt is both informative and accessible, allowing the
-LLM to generate responses that are accurate, relevant, and valuable to users. Consider the user's perspective and how
-the prompt can facilitate a meaningful and efficient dialogue between the user and the LLM.
-```
-
-**چطوری کار می‌کنه؟**
-
-1. کاربر این پرامپت رو به مدل می‌ده و بعد موضوعی که نیاز داره رو توضیح می‌ده.
-2. مدل سعی می‌کنه یک پرامپت مناسب برای همون موضوع بنویسه.
-3. کاربر می‌تونه با درخواست‌های بعدی، پرامپت رو بهبود بده و نتیجه بهتری بگیره.
-
-این روش به شما کمک می‌کنه تا پرامپت‌های دقیق‌تر و کاربردی‌تری بنویسین و از توانایی‌های مدل به بهترین شکل استفاده کنین.
-
-<br>
-
-### 2. استفاده از وبسایت‌های پرامپت‌ساز و بهبوددهنده پرامپت 🌐
-
-یکی دیگه از روش‌های کاربردی استفاده از وبسایت‌هایی است که به شما کمک می‌کنن تا پرامپت‌های بهتری بسازید و بهبود بدید. یکی
-از این وبسایت‌ها، [promptsroyale.com](https://www.promptsroyale.com)  هست که اتفاقا یک پروژه رایگان و اپن سورس هست.
-
-**چطوری کار می‌کنه؟**
-
-1. شما توکن OpenAI خودتون رو وارد می‌کنید.
-2. وبسایت از توضیحات شما استفاده می‌کنه و با کمک ChatGPT-4 (که الان قوی‌ترین مدل هست)، مثلا ده تا پرامپت مختلف می‌سازه (
-   پیشنهاد سازنده ۱۰ تاست).
-3. بعد با کمک همون ChatGPT-4، مثلا ۱۰ تا تست کیس (مثال‌هایی که بتونه کیفیت پرامپت رو بررسی کنه) می‌نویسه.
-4. سپس یک سری بتل (جنگ) بین هر دو پرامپت برگزار می‌کنه و خروجی ها رو می‌گیره.
-5. در نهایت، با کمک امتیازدهی (دوباره با کمک ChatGPT-4)، بهترین پرامپت‌ها رو به ترتیب کیفیت به شما تحویل می‌ده.
-
-این روش کمک می‌کنه تا بدون نیاز به تلاش زیاد (ولی با یک هزینه معقول)، بهترین پرامپت‌ها رو برای نیازهای خودتون داشته
-باشید و از خروجی‌های دقیق‌تر و کاربردی‌تری داشته باشین.
-
-
-<br>
+این بخش دوتا روش ساده و کاربردی معرفی می‌کنه که می‌تونی باهاشون پرامپت‌های بهتری بسازی یا اونایی که داری رو بهبود بدی.
 
 ---
 
 <br>
 
-
 <div align="center">
 
-## دسترسی رایگان به API برای استفاده از LLM ها 🌐
+## ۱. استفاده از پرامپت‌های پرامپت‌ساز 🛠️
 
 </div>
 
-اگه به API رسمی مدل‌های زبانی بزرگ مثل OpenAI دسترسی نداری یا دنبال روش‌های رایگان هستی، اینجا دو تا روش ساده و کاربردی
-رو معرفی می‌کنم که بهت کمک می‌کنه به راحتی از این مدل‌ها استفاده کنی. در فصل‌های بعدی می‌گم چطوری باید از این روش‌ها
-استفاده کنی.
+توی این روش، از خود مدل می‌خوایم نقش یه «پرامپت‌نویس حرفه‌ای» رو بازی کنه و براساس نیاز ما، یه پرامپت کامل و باکیفیت تولید کنه.
 
-<br>
+**چطوری کار می‌کنه؟**  
+1. پرامپت زیر رو به مدل می‌دی.  
+2. موضوع یا کاری که براش پرامپت می‌خوای رو مشخص می‌کنی.  
+3. مدل یه پرامپت ساختاریافته برای همون موضوع تولید می‌کنه.
 
+---
 
-<div align="center">
+### پرامپت پیشنهادی برای شروع ✏️
 
-### ۱. استفاده از API‌های آماده 🌍
-
-</div>
-
-
-خیلی از شرکت‌ها API‌های آماده دارن که می‌تونی راحت ازشون استفاده کنی. یکی از این
-سایت‌ها [DeepInfra](https://deepinfra.com/) هست. فقط کافیه یه حساب رایگان بسازی و بعدش می‌تونی از API‌های اونا استفاده
-کنی.
-
-
-#### مراحل استفاده:
-
-1. **ثبت‌نام:** برو به سایت DeepInfra و یه حساب کاربری بساز.
-2. **دریافت API Key:** بعد از ثبت‌نام، API Key رو دریافت کن.
-3. **استفاده از API:** حالا می‌تونی از مدل‌های زبانی مثل Qwen2 و Llama3 استفاده کنی. لینک مربوط به هر مدل رو از صفحه
-   همون مدل در سایت بگیر.
-
-<br>
-
-<div align="center">
-
-### ۲. استفاده از نرم‌افزارهایی مثل Ollama 🖥️
-
-</div>
-
-
-اگه دوست داری مدل‌ها رو به صورت محلی روی سیستم خودت اجرا کنی، می‌تونی از نرم‌افزارهایی مثل [Ollama](https://ollama.com/)
-استفاده کنی. این نرم‌افزارها بهت اجازه می‌دن مدل‌های کوچیک‌تر رو روی سیستم خودت اجرا کنی.
-
-
-
-#### مراحل استفاده از Ollama:
-
-
-1. **دانلود و نصب:** نرم‌افزار Ollama رو دانلود و نصب کن.
-2. **نصب و اجرا:** با دستور زیر مدل‌های مورد نظر رو نصب و اجرا کن:
 
 <div align="left">
 
 ```
-ollama pull gemma:2b ollama run gemma:2b
+You are an expert prompt engineer. Your objective is to create a comprehensive, high-quality system prompt based on the user’s request. Use precise and professional language, ensuring the prompt thoroughly addresses each of the following sections:
+
+---
+
+### 1. System Prompt
+- **Objective**: Clearly state the AI’s primary goal.  
+- **Role Definition**: Define the AI’s role with precision, focusing on the core functionality the user needs.
+
+### 2. Instructions
+- **Task Breakdown**: Break down complex actions into sequential, easy-to-follow steps.  
+- **Actionable Language**: Provide explicit directives to avoid ambiguity.  
+- **Coverage**: Address every necessary aspect of the functionality or process requested.
+
+### 3. Constraints
+- **Boundaries**: Specify what the AI can and cannot do (e.g., scope of tasks or compliance requirements).  
+- **Ethical Considerations**: Ensure adherence to relevant standards, regulations, and responsible practices.
+
+### 4. Output Format
+- **Structure**: Indicate how the AI’s final answer should be organized (e.g., headings, bullet points).  
+- **Formatting Requirements**: Detail any specific text styling or layout guidelines (e.g., code blocks, markdown).  
+- **Level of Detail**: Clarify whether the output should be concise, moderately detailed, or exhaustive.
+
+### 5. Examples
+- **Sample Inputs**: Provide illustrative prompts or scenarios that the AI could receive.  
+- **Sample Outputs**: Show how the AI should respond to these inputs, adhering to the established format and constraints.
 ```
 
 </div>
 
 
-این دستورات مدل Gemma 2B رو دانلود و اجرا می‌کنن. می‌تونی مدل‌های دیگه‌ای رو هم به همین شکل نصب و اجرا کنی.
 
-3. **استفاده از مدل:** حالا می‌تونی مدل‌ها رو به صورت محلی اجرا کنی و درخواست‌هات رو بهشون بفرستی.
 
-برای استفاده از Ollama، می‌تونی به [مدل‌های پشتیبانی شده](https://ollama.com/models) سر بزنی و مدل مورد نظرت رو انتخاب و
-دانلود کنی.
+---
+
+<br>
+
+<div align="center">
+
+## ۲. استفاده از سایت پرامپت‌ساز آنلاین 🌐
+
+</div>
+
+اگه ترجیح می‌دی به‌جای مدل، یه ابزار برات پرامپت بسازه، می‌تونی از سایت [**prompts.maux.site**](https://prompts.maux.site) استفاده کنی. این ابزار رایگانه و توسط یکی از بچه‌های ایرانی ساخته شده. سورسش هم اینجاست:  
+
+[github.com/MauxPlatform/PromptKadeh](https://github.com/MauxPlatform/PromptKadeh)
+
+
+
+**چطوری کار می‌کنه؟**  
+1. موضوعت رو وارد می‌کنی.  
+2. سایت برات پرامپت می‌سازه.  
+3. با چند مثال مختلف، این پرامپت‌ها رو تست می‌کنه.  
+
+<br>
+
+
+**نکته مهم:**  
+اگه با محدودیت رایگان سایت روبه‌رو شدی، می‌تونی از یه توکن رایگان استفاده کنی.  
+فقط کافیه بری به [aistudio.google.com](https://aistudio.google.com) و با اکانت گوگل یه **توکن رایگان** بگیری.  
+تعداد پرامپت‌هایی که باهاش می‌تونی بزنی کمه، ولی برای تست و ساخت چند پرامپت **کاملاً جواب می‌ده**.
+
+
+
+
+<br>
+
+
+---
+
+<br>
+
+<div align="center">
+
+# دسترسی رایگان به API برای استفاده از LLMها 🌐
+
+</div>
+
+اگه نمی‌خوای از اول هزینه کنی یا دسترسی به APIهای پولی مثل OpenAI نداری، اینجا چند تا راه ساده و رایگان هست که باهاش می‌تونی مدل‌های زبانی قوی رو تست و استفاده کنی. این روش‌ها هم برای تمرین خوبن، هم برای شروع کار واقعی.
+
+---
+
+<br>
+
+<div align="center">
+
+## ۱. استفاده از سرویس‌های آنلاین 🌍
+
+</div>
+
+چند تا پلتفرم هستن که خیلی راحت می‌تونی با ساختن یه حساب، ازشون مدل بگیری و استفاده کنی:
+
+### سرویس **[Google AI Studio](https://aistudio.google.com)**  
+  با این ابزار می‌تونی خیلی راحت مدل‌های گوگل (مثل gemini) رو امتحان کنی. گوگل یه مقدار توکن رایگان بهت می‌ده، ولی استفاده ازش محدوده. با این حال، برای تمرین و تست، انتخاب خوبیه.
+
+### سرویس **[DeepInfra](https://deepinfra.com)**  
+  این سایت بهت اجازه می‌ده از مدل‌های اپن‌سورس استفاده کنی. ثبت‌نامش راحته، بعدش یه API Key می‌گیری و می‌تونی به مدل‌های مختلف وصل شی. مدل‌هایی مثل llama یا mistral رو راحت می‌تونی ازش اجرا بگیری.
+
+### سرویس **[OpenRouter](https://openrouter.ai)**  
+  اینم یک سرویس جالبیه که درخواستت رو می‌فرسته به مدلی که فکر می‌کنه بهتر جواب می‌ده(قیمت رو هم در نظر میگیره). یه مقدار استفاده‌ی رایگان داره، ولی اگه خواستی بیشتر استفاده کنی، باید حساب شارژ کنی. خوبی بزرگش اینه که پرداخت با کریپتو هم داره، که برای خیلی از کاربرا (مخصوصاً ایرانیا) دردسر رو کمتر می‌کنه.
+
+---
+
+<br>
+
+<div align="center">
+
+## ۲. اجرا کردن مدل روی لپ‌تاپ با Ollama 🖥️
+
+</div>
+
+اگه می‌خوای مدل رو مستقیم روی سیستم خودت اجرا کنی، Ollama انتخاب خیلی خوبیه. نیاز به اینترنت دائم نداره، و مدل رو روی سیستم خودت اجرا می‌کنی.
+
+مثلاً برای اجرا کردن یه مدل، فقط کافیه این دستورها رو بزنی:
+
+```
+ollama pull gemma:2b
+ollama run gemma:2b
+```
+
+اگه مدل رو نداری، خودش برات دانلودش می‌کنه.
+
+
+---
+
+<br>
+
+<div align="center">
+
+## ۳. اجرا کردن مدل با ظاهر گرافیکی توی LM Studio 🎛️
+
+</div>
+
+LM Studio هم مثل Ollama مدل رو روی سیستم خودت اجرا می‌کنه، با این تفاوت که یه رابط گرافیکی خوشگل داره. یعنی لازم نیست با خط فرمان کار کنی. خیلی راحت مدل رو انتخاب می‌کنی و توی یه پنجره‌ی تمیز باهاش چت می‌کنی.
+
+یه نکته‌ی خوب دیگه‌اش اینه که API هم می‌ده. یعنی می‌تونی مدل اجرا شده رو از طریق API توی پروژه‌هات استفاده کنی.
+
+برای دیدن لیست مدل‌هاش، برو به:  
+[lmstudio.ai/models](https://lmstudio.ai/models)
+
 
 <br>
 
