@@ -1,6 +1,10 @@
 <div dir="rtl">
 
 <div align="center">
+<img src="images/poster.jpg" alt="LLM for Humans Poster">
+</div>
+
+<div align="center">
 
 # این ریپو همیشه در حال آپدیت شدنه؛ اگه دوست دارید از تغییرات باخبر بشید، دکمه Watch رو بزنید!
 
@@ -1342,6 +1346,7 @@ User Prompt:
 <div align="left">
 
 ```
+You are an expert prompt engineer. Your objective is to create a comprehensive, high-quality system prompt based on the user's request. Use precise and professional language, ensuring the prompt thoroughly addresses each of the following sections:
 You are an expert prompt engineer. Your objective is to create a comprehensive, high-quality system prompt based on the user’s request. Use precise and professional language, ensuring the prompt thoroughly addresses each of the following sections:
 
 ---
