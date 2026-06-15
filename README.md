@@ -339,8 +339,6 @@ graph LR
 
 بیا ببینیم چطور عملاً امبدینگ می‌سازیم و شباهت دو متن فارسی رو اندازه می‌گیریم:
 
-</div>
-
 ```python
 from openai import OpenAI
 import numpy as np
@@ -372,8 +370,6 @@ emb3 = get_embedding(text3)
 print(f"شباهت متن ۱ و ۲ (مشابه): {cosine_similarity(emb1, emb2):.3f}")   # عدد بزرگ 👍
 print(f"شباهت متن ۱ و ۳ (متفاوت): {cosine_similarity(emb1, emb3):.3f}")  # عدد کوچیک 👎
 ```
-
-<div dir="rtl">
 
 > 💡 خروجی این مقایسه عملاً عددی بین ۰ و ۱ درمیاد؛ هر چی به ۱ نزدیک‌تر، یعنی دو متن از نظر **معنایی** شبیه‌ترن. جفت اول با اینکه کلمات مشترک کمی دارن عدد به‌مراتب بالاتری از جفت دوم می‌گیرن؛ مدل می‌فهمه هر دو جمله دارن درباره یه موضوع حرف می‌زنن، با اینکه کلمات مشترکشون کمه. خودت اجرا کن و اعداد واقعی رو ببین!
 
@@ -634,8 +630,6 @@ graph LR
 
 **پاسخ احتمالی مدل:**
 
-</div>
-
 ```json
 {
   "title": "بوف کور",
@@ -643,8 +637,6 @@ graph LR
   "year": 1315
 }
 ```
-
-<div dir="rtl">
 
 **مثال دیگه: درخواست لیست**
 `مزایای اصلی یادگیری پایتون رو به صورت یه لیست شماره‌دار برام بنویس.`
@@ -670,8 +662,6 @@ graph LR
 
 **نمونه سریع با LangChain (پایتون):**
 
-</div>
-
 ```python
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -696,8 +686,6 @@ result = chain.invoke({})
 
 print(result)
 ```
-
-<div dir="rtl">
 
 با `response_format` و `JsonOutputParser` خروجی به‌صورت JSON ساختاریافته برمی‌گرده و دیگه لازم نیست متن رو دستی تمیز کنی.
 
@@ -913,8 +901,6 @@ print(result)
 
 به مدل می‌گی «کد پایتون زیر یه باگ داره، قدم به قدم فکر کن و مشکلش رو پیدا کن» و این کد رو بهش می‌دی:
 
-</div>
-
 ```python
 def average(numbers):
     total = 0
@@ -924,8 +910,6 @@ def average(numbers):
 
 result = average([])
 ```
-
-<div dir="rtl">
 
 **پاسخ احتمالی مدل:**
 ```text
@@ -1177,8 +1161,6 @@ result = average([])
 
 #### **مثال:**
 
-</div>
-
 ```python
 response = client.chat.completions.create(
     model="gpt-5.5",
@@ -1187,8 +1169,6 @@ response = client.chat.completions.create(
     max_completion_tokens=50,  # حداکثر ۵۰ توکن جواب بده
 )
 ```
-
-<div dir="rtl">
 
 > ⚠️ **مراقب باش:** اگه این سقف رو خیلی کم بذاری، جواب مدل **وسطش قطع می‌شه** و ناقص می‌مونه. اسم پارامتر هم همه‌جا یکی نیست: تو نسخه‌های جدید OpenAI بهش می‌گن `max_completion_tokens`، تو Anthropic می‌شه `max_tokens` و تو Gemini می‌شه `max_output_tokens`.
 
@@ -1212,8 +1192,6 @@ response = client.chat.completions.create(
 
 #### **مثال:**
 
-</div>
-
 ```python
 response = client.chat.completions.create(
     model="gpt-5.5",
@@ -1222,8 +1200,6 @@ response = client.chat.completions.create(
     stop=["\n\n", "۴."],  # وقتی به خط خالی یا شماره ۴ رسید، متوقف شو
 )
 ```
-
-<div dir="rtl">
 
 ---
 
@@ -1244,8 +1220,6 @@ response = client.chat.completions.create(
 
 #### **مثال:**
 
-</div>
-
 ```python
 response = client.chat.completions.create(
     model="gpt-5.5",
@@ -1254,8 +1228,6 @@ response = client.chat.completions.create(
     seed=42,  # همین عدد رو هر بار بذار تا جواب مشابه بگیری
 )
 ```
-
-<div dir="rtl">
 
 > 💡 **نکته:** حتی با `seed` مشخص، تکرارپذیری ۱۰۰٪ تضمین نمی‌شه؛ ولی خروجی‌ها خیلی به هم نزدیک می‌شن. ضمناً این پارامتر تو همه مدل‌ها و APIها وجود نداره؛ اگه مدلت قبولش نکرد، داک رسمی رو چک کن.
 
@@ -1421,8 +1393,6 @@ response = client.chat.completions.create(
 
 تو API مدل‌های OpenAI، سیستم پرامپت به عنوان **اولین پیام** با نقش `system` فرستاده می‌شه (Anthropic یه پارامتر جداگانه به اسم `system` داره که تو فصل بعد می‌بینیش):
 
-</div>
-
 ```python
 from openai import OpenAI
 
@@ -1443,8 +1413,6 @@ response = client.chat.completions.create(
 )
 ```
 
-<div dir="rtl">
-
 ---
 
 <div align="center">
@@ -1454,8 +1422,6 @@ response = client.chat.completions.create(
 </div>
 
 سیستم پرامپت تو کل مکالمه باقی می‌مونه؛ فقط کافیه یه بار اول کار بذاریش:
-
-</div>
 
 ```python
 messages = [
@@ -1475,8 +1441,6 @@ messages = [
 # مدل هنوز می‌دونه معلم ریاضی صبوره!
 response = client.chat.completions.create(model="gpt-5.5", messages=messages)
 ```
-
-<div dir="rtl">
 
 سیستم پرامپت فقط یه بار تو لیست پیام‌هاست، ولی اثرش تو **کل مکالمه** می‌مونه.
 
@@ -1570,20 +1534,16 @@ response = client.chat.completions.create(model="gpt-5.5", messages=messages)
 
 ### نصب کتابخانه‌ها 📦
 
-</div>
-
 ```bash
-# نصب کتابخانه OpenAI
+# OpenAI
 pip install openai
 
-# نصب کتابخانه Anthropic
+# Anthropic
 pip install anthropic
 
-# نصب کتابخانه Google Gemini
+# Google Gemini
 pip install google-genai
 ```
-
-<div dir="rtl">
 
 > ⚠️ **نکته امنیتی:** کلید API رو هیچ‌وقت مستقیم تو کد ننویس! از متغیر محیطی استفاده کن:
 > ```bash
@@ -1595,8 +1555,6 @@ pip install google-genai
 ---
 
 ### مثال ۱: فراخوانی OpenAI (مدل GPT-5.5) 🟢
-
-</div>
 
 ```python
 from openai import OpenAI
@@ -1617,8 +1575,6 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-<div dir="rtl">
-
 > 🆕 **یه API تازه‌تر به اسم Responses:** چیزی که تا الان باهاش کار کردیم، یعنی `chat.completions`، همون API کلاسیک و جاافتاده‌ست که هنوز هم پابرجاست. ولی OpenAI برای پروژه‌های جدید، رابط تازه‌تری به اسم Responses رو پیشنهاد می‌ده که ابزارهای آماده (مثل جستجوی وب و اجرای کد) و مدیریت بهتر مکالمه و کش رو یه‌جا داخل خودش جمع کرده:
 >
 > ```python
@@ -1635,8 +1591,6 @@ print(response.choices[0].message.content)
 ---
 
 ### مثال ۲: فراخوانی Anthropic (مدل Claude) 🟣
-
-</div>
 
 ```python
 import anthropic
@@ -1658,15 +1612,11 @@ message = client.messages.create(
 print(message.content[0].text)
 ```
 
-<div dir="rtl">
-
 > 💡 دقت کن: تو Anthropic سیستم پرامپت به جای پیام `system`، یه **پارامتر جداگانه** به اسم `system` داره و مشخص کردن `max_tokens` هم اجباریه.
 
 ---
 
 ### مثال ۳: فراخوانی Google Gemini 🔵
-
-</div>
 
 ```python
 from google import genai
@@ -1683,8 +1633,6 @@ response = client.models.generate_content(
 # خواندن جواب مدل
 print(response.text)
 ```
-
-<div dir="rtl">
 
 ---
 
@@ -1719,8 +1667,6 @@ print(response.text)
 هر بار که پیام می‌فرستی، **تمام تاریخچه مکالمه** دوباره به مدل فرستاده می‌شه؛ مثل یه ماهی قرمز که هر بار باید همه‌چیز رو از اول براش تعریف کنی! 🐟
 
 ### چطوری تاریخچه مکالمه رو مدیریت کنیم؟ 📝
-
-</div>
 
 ```python
 from openai import OpenAI
@@ -1762,8 +1708,6 @@ print(chat("چقدر طول می‌کشه؟"))
 # مدل هنوز می‌دونه داریم درباره نسخه بدون گوشت حرف می‌زنیم
 ```
 
-<div dir="rtl">
-
 > 💡 **این کد فقط برای فهم ایده‌ست، نه پروداکشن:** اینجا تاریخچه رو توی یه متغیر سراسری (`messages`) نگه داشتیم و تابع از داخل خودش دستکاریش می‌کنه. برای یه مثال آموزشی اوکیه، ولی تو کد واقعی بهتره تاریخچه رو به تابع پاس بدی (یا توی یه کلاس نگهش داری) تا قاطی نشه و تست و نگه‌داریش هم راحت‌تر باشه.
 
 ### مشکل بزرگ: انباشت توکن! 📈
@@ -1783,8 +1727,6 @@ print(chat("چقدر طول می‌کشه؟"))
 
 **۱. فقط آخرین N پیام رو نگه دار (Sliding Window):**
 
-</div>
-
 ```python
 def get_recent_messages(messages, max_messages=20):
     """فقط سیستم پرامپت + آخرین پیام‌ها رو نگه می‌داره"""
@@ -1793,11 +1735,7 @@ def get_recent_messages(messages, max_messages=20):
     return system_msg + [m for m in recent if m["role"] != "system"]
 ```
 
-<div dir="rtl">
-
 **۲. خلاصه‌سازی تاریخچه؛ از خود مدل بخواه خلاصه کنه:**
-
-</div>
 
 ```python
 def summarize_history(messages):
@@ -1815,8 +1753,6 @@ def summarize_history(messages):
         *messages[-4:]  # ۴ پیام آخر کامل
     ]
 ```
-
-<div dir="rtl">
 
 **۳. حافظه خارجی (External Memory)؛ ذخیره اطلاعات مهم در دیتابیس:**
 - اطلاعات مهم کاربر رو استخراج و جداگانه ذخیره کن
@@ -1844,8 +1780,6 @@ def summarize_history(messages):
 
 ### مثال استریمینگ با OpenAI 🌊
 
-</div>
-
 ```python
 from openai import OpenAI
 
@@ -1869,11 +1803,7 @@ for chunk in stream:
 # خروجی: کلمه‌کلمه روی صفحه ظاهر می‌شه ✍️
 ```
 
-<div dir="rtl">
-
 ### مثال استریمینگ با Anthropic 🌊
-
-</div>
 
 ```python
 import anthropic
@@ -1891,8 +1821,6 @@ with client.messages.stream(
     for text in stream.text_stream:
         print(text, end="", flush=True)
 ```
-
-<div dir="rtl">
 
 ### بدون استریمینگ در مقابل با استریمینگ ⏱️
 
@@ -2175,8 +2103,6 @@ with client.messages.stream(
 
 **مثال واقعی با LangChain (ساختن یه ایجنت ساده با ابزار):**
 
-</div>
-
 ```python
 from langchain.agents import create_agent
 from langchain_core.tools import tool
@@ -2201,8 +2127,6 @@ result = agent.invoke(
     {"messages": [{"role": "user", "content": "۱۵ ضربدر ۷ چند می‌شه؟ بعد جوابش رو با ۱۰ جمع کن."}]}
 )
 ```
-
-<div dir="rtl">
 
 تو این مثال، ایجنت خودش تشخیص می‌ده اول باید ضرب کنه (با ابزار `multiply`)، بعد نتیجه رو جمع بزنه (با ابزار `add`). این دقیقاً همون الگوی «فکر کن، عمل کن، مشاهده کن» هست!
 
@@ -2486,8 +2410,6 @@ result = agent.invoke(
 
 اگه با پایتون کار می‌کنید، کتابخونه **Pydantic** این کار رو مثل آب خوردن می‌کنه:
 
-</div>
-
 ```python
 from enum import Enum
 
@@ -2504,8 +2426,6 @@ class AddTodoItem(BaseModel):
     title: str = Field(description="عنوان تسک")
     priority: Priority = Field(description="اولویت تسک")
 ```
-
-<div dir="rtl">
 
 مدل این رو می‌خونه و دقیقاً می‌فهمه که اگر بخواد تسک بسازه، باید `title` و `priority` رو پر کنه.
 *   **نکته مهم:** وقتی مقدارهای مجاز رو محدود می‌کنید (مثلاً با Enum یا Literal)، مدل دیگه نمی‌تونه از خودش خلاقیت به خرج بده و مثلاً بگه `priority: "super_high"`. این یعنی کنترل خیلی بیشتر روی خروجی!
@@ -2531,17 +2451,11 @@ class AddTodoItem(BaseModel):
 برای اینکه این مثال رو اجرا کنید:
 1.  اول پکیج‌ها رو نصب کنید.
 
-</div>
-
 ```bash
 pip install langchain-openai pydantic
 ```
 
-<div dir="rtl">
-
 2.  بعد کلید OpenAI رو توی متغیر محیطی `OPENAI_API_KEY` قرار بدید.
-
-</div>
 
 ```python
 from typing import Optional
@@ -2566,8 +2480,6 @@ response = structured_llm.invoke("سلام، من علی هستم. ۳۰ سالم
 print(f"نام: {response.name}")    # خروجی: علی
 print(f"مهارت‌ها: {response.skills}") # خروجی: مثلاً ['پایتون', 'جاوا اسکریپت']
 ```
-
-<div dir="rtl">
 
 می‌بینید؟ دیگه لازم نیست با `json.loads()` و `try-except` کشتی بگیرید. خروجی مستقیم می‌ره تو کدتون! 😎
 
@@ -2599,8 +2511,6 @@ print(f"مهارت‌ها: {response.skills}") # خروجی: مثلاً ['پای
 </div>
 
 بیاید یه مثال **واقعی و کامل** ببینیم که تو عمل چطور کار می‌کنه. فرض کن یه اپلیکیشن داری که کاربر ازش می‌پرسه «هوای تهران چطوره؟» و مدل باید ابزار آب‌وهوا رو صدا بزنه، جواب بگیره و به زبان آدمیزاد توضیح بده:
-
-</div>
 
 ```python
 from langchain_openai import ChatOpenAI
@@ -2654,8 +2564,6 @@ if ai_response.tool_calls:
     # خروجی مثلاً: "هوای تهران الان آفتابی و ۲۸ درجه‌ست. هوای خوبیه!"
 ```
 
-<div dir="rtl">
-
 می‌بینی؟ مدل مثل یه **مغز** فقط تصمیم گرفت کدوم ابزار رو صدا بزنه. ما (برنامه) ابزار رو اجرا کردیم و نتیجه رو بهش برگردوندیم. بعد مدل با اون نتیجه، جواب قشنگ و طبیعی ساخت. 🎯
 
 ---
@@ -2674,20 +2582,16 @@ if ai_response.tool_calls:
 *   **حالت required:** مدل **حتماً** باید حداقل یه ابزار رو صدا بزنه (مثلاً وقتی می‌دونی جواب بدون ابزار ممکن نیست).
 *   **مشخص کردن ابزار خاص:** مدل رو مجبور می‌کنی **فقط** یه ابزار مشخص رو استفاده کنه.
 
-</div>
-
 ```python
-# حالت auto - مدل خودش تصمیم می‌گیره
+# auto - مدل خودش تصمیم می‌گیره
 llm_with_tools = llm.bind_tools([get_weather, search_web], tool_choice="auto")
 
-# حالت required - حتماً باید ابزاری رو صدا بزنه
+# required - حتماً باید ابزاری رو صدا بزنه
 llm_with_tools = llm.bind_tools([get_weather, search_web], tool_choice="required")
 
-# مشخص کردن ابزار خاص - فقط get_weather
+# get_weather - فقط همین ابزار رو صدا بزنه
 llm_with_tools = llm.bind_tools([get_weather, search_web], tool_choice="get_weather")
 ```
-
-<div dir="rtl">
 
 ### ب) نوشتن توضیحات خوب برای ابزار (Tool Description) 📝
 
@@ -2698,16 +2602,14 @@ llm_with_tools = llm.bind_tools([get_weather, search_web], tool_choice="get_weat
 *   **مثال بذار:** تو docstring مثال از مقادیر ورودی بذار؛ مدل با مثال بهتر یاد می‌گیره.
 *   **محدودیت‌ها رو بگو:** اگه ابزار فقط برای بعضی شهرها کار می‌کنه، بگو.
 
-</div>
-
 ```python
-# ❌ بد - مدل نمی‌فهمه کی از این استفاده کنه
+# ❌ search - مدل نمی‌فهمه کی صداش بزنه
 @tool
 def search(q: str) -> str:
     """جست‌وجو"""
     ...
 
-# ✅ خوب - مدل دقیقاً می‌فهمه
+# ✅ search_products - مدل دقیقاً می‌فهمه
 @tool
 def search_products(query: str, category: str = "all") -> str:
     """جست‌وجو در کاتالوگ محصولات فروشگاه. برای پیدا کردن محصول بر اساس نام، برند، یا ویژگی استفاده کن.
@@ -2718,8 +2620,6 @@ def search_products(query: str, category: str = "all") -> str:
     """
     ...
 ```
-
-<div dir="rtl">
 
 ### ج) فراخوانی موازی ابزارها (Parallel Tool Calling) ⚡
 
@@ -2836,8 +2736,6 @@ graph LR
 
 بیا یه Agent ساده بسازیم که می‌تونه سوالات ریاضی و نرخ ارز رو با ابزار حل کنه:
 
-</div>
-
 ```python
 from langchain.agents import create_agent
 from langchain_core.tools import tool
@@ -2874,8 +2772,6 @@ result = agent.invoke(
 # ۳. جواب نهایی رو می‌ده
 print(result["messages"][-1].content)
 ```
-
-<div dir="rtl">
 
 > ⚠️ **نکته امنیتی:** تو کد واقعی هیچ‌وقت ورودی کاربر (یا خروجی مدل!) رو مستقیم به `eval` نده؛ این یعنی اجرای کد دلخواه روی سیستم تو. برای محاسبه از کتابخونه‌های امن مثل `numexpr` یا یه پارسر ریاضی استفاده کن. (تو فصل امنیت هم بهش می‌رسیم: خروجی مدل رو بدون بررسی اجرا نکن!)
 
@@ -3007,8 +2903,6 @@ print(result["messages"][-1].content)
 
 فرض کن می‌خوای عکس منوی یه رستوران رو بفرستی و از مدل بخوای توضیح بده چی‌ها داره:
 
-</div>
-
 ```python
 from openai import OpenAI
 
@@ -3038,8 +2932,6 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 # خروجی: لیست غذاها با قیمت‌ها به فارسی ✅
 ```
-
-<div dir="rtl">
 
 ### کاربردهای رایج Vision 🔍
 
@@ -3898,8 +3790,6 @@ TypeError: unsupported operand type(s) for +: 'int' and 'str'
 
 بیا ببینیم چطور عملاً یه مدل داور رو با پایتون پیاده‌سازی کنیم:
 
-</div>
-
 ```python
 from openai import OpenAI
 import json
@@ -3939,8 +3829,6 @@ print(f"نمره دقت: {result['accuracy']}/5")
 print(f"نمره میانگین: {result['average']}/5")
 print(f"دلیل: {result['reasoning']}")
 ```
-
-<div dir="rtl">
 
 > 💡 **نکته:** برای نتایج قابل اطمینان‌تر، داوری رو ۳ بار اجرا کن و میانگین بگیر. ضمناً داور هم ممکنه اشتباه کنه؛ پس درصدی از نمونه‌ها رو خودت هم بررسی کن.
 
@@ -4190,18 +4078,12 @@ graph LR
 
 **مثال فایل دیتا (`dataset.jsonl`):**
 
-</div>
-
 ```json
 {"input": "سلام، خوبی؟", "output": "سلام! من یک هوش مصنوعی هستم، چطور کمکت کنم؟"}
 {"input": "پایتخت فرانسه کجاست؟", "output": "پاریس."}
 ```
 
-<div dir="rtl">
-
 اگه فرمت چت باشه (برای مدل‌هایی مثل Llama 3):
-
-</div>
 
 ```json
 {"messages": [
@@ -4210,8 +4092,6 @@ graph LR
   {"role": "assistant", "content": "چرا خیارشورها هیچ‌وقت دروغ نمی‌گن؟ چون نمک‌گیر می‌شن!"}
 ]}
 ```
-
-<div dir="rtl">
 
 کیفیت این دیتا **خیلی مهم‌تر** از کمیتشه. ۵۰ تا مثال عالی، بهتر از ۵۰۰۰ تا مثال آشغاله.
 
@@ -4695,10 +4575,7 @@ graph TD
 
 بیاید یه پایپلاین ساده RAG بسازیم. فرض کن یه سری سند داری و می‌خوای یه سیستم سوال و جواب بسازی:
 
-</div>
-
 ```python
-# نصب پکیج‌ها:
 # pip install langchain langchain-openai langchain-chroma langchain-text-splitters
 
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
@@ -4753,8 +4630,6 @@ answer = rag_chain.invoke("ساعات کاری شرکت چیه؟")
 print(answer)
 # خروجی: ساعات کاری شرکت شنبه تا چهارشنبه ۹ صبح تا ۵ عصر است. پنج‌شنبه‌ها نیم‌روز کار می‌کنند.
 ```
-
-<div dir="rtl">
 
 ببین چقدر ساده بود! 🎉 فقط ۵ مرحله: سند بده، تیکه کن، بردار بساز، پرامپت بنویس، سوال بپرس!
 
@@ -4923,8 +4798,6 @@ You are an expert prompt engineer. Your objective is to create a comprehensive, 
 
 بیا عملی ببینیم:
 
-</div>
-
 ```python
 import tiktoken
 
@@ -4945,8 +4818,6 @@ print(f"فارسی:  {len(tokens_fa)} توکن")    # ۱۴ توکن!
 ratio = len(tokens_fa) / len(tokens_en)
 print(f"نسبت: فارسی {ratio:.1f} برابر بیشتر توکن مصرف می‌کنه")  # ۲.۰ برابر
 ```
-
-<div dir="rtl">
 
 > 💡 **نکته عملی:** وقتی قیمت API رو حساب می‌کنی، هزینه واقعیت رو حدود **۱.۵ تا ۳ برابر** قیمت‌هایی که برای انگلیسی تبلیغ می‌شه در نظر بگیر! (عدد دقیق به توکنایزر و متن بستگی داره؛ خودت اجرا کن و ببین.)
 
@@ -5082,8 +4953,6 @@ momkene komakam koni?»
 
 قیمت‌ها مدام عوض می‌شن، پس به جای اینکه جدول قیمت رو دستی توی کدت بنویسی (که زود قدیمی می‌شه)، از یه کتابخونه مثل **litellm** استفاده کن که قیمت مدل‌ها رو خودش به‌روز نگه می‌داره. فقط اسم مدل و تعداد توکن رو می‌دی:
 
-</div>
-
 ```python
 # pip install litellm
 from litellm import cost_per_token
@@ -5098,8 +4967,6 @@ total = prompt_cost + completion_cost
 print(f"ورودی: ${prompt_cost:.4f} | خروجی: ${completion_cost:.4f} | کل: ${total:.4f}")
 # خروجی: ورودی: $0.0050 | خروجی: $0.0150 | کل: $0.0200
 ```
-
-<div dir="rtl">
 
 ### مقایسه هزینه ارائه‌دهنده‌ها 📊
 
@@ -5464,10 +5331,8 @@ print(f"ورودی: ${prompt_cost:.4f} | خروجی: ${completion_cost:.4f} | ک
 
 مثلاً برای اجرا کردن یه مدل، فقط کافیه این دستورها رو بزنی:
 
-</div>
-
 ```bash
-# دانلود و اجرای یه مدل سبک و سریع (حدود ۳.۵ گیگ)
+# ollama - دانلود و اجرای یه مدل سبک و سریع (حدود ۳.۵ گیگ)
 ollama pull qwen3.5:4b
 ollama run qwen3.5:4b
 
@@ -5476,13 +5341,9 @@ ollama pull qwen3.5:9b
 ollama run qwen3.5:9b
 ```
 
-<div dir="rtl">
-
 اگه مدل رو نداری، خودش برات دانلودش می‌کنه. (اسم و نسخه مدل‌ها مدام عوض می‌شه؛ لیست به‌روز رو تو [ollama.com/library](https://ollama.com/library) ببین.)
 
 **یه قابلیت خیلی مهم:** بعد از اجرای Ollama، یه **سرور API سازگار با فرمت OpenAI** روی سیستمت بالا میاد (روی `http://localhost:11434`). یعنی می‌تونی هر کدی که برای OpenAI نوشتی رو فقط با عوض کردن آدرس سرور، روی مدل لوکالت اجرا کنی! 🔄
-
-</div>
 
 ```python
 from openai import OpenAI
@@ -5496,13 +5357,9 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-<div dir="rtl">
-
 **راه دوم: استفاده مستقیم از API بومی Ollama (بدون کتابخونه اضافه) 🔌**
 
 اگه نمی‌خوای کتابخونه `openai` رو نصب کنی، با `requests` ساده هم می‌تونی:
-
-</div>
 
 ```python
 import requests
@@ -5523,8 +5380,6 @@ def chat_with_ollama(prompt, model="qwen3.5:4b"):
 answer = chat_with_ollama("سلام! تفاوت RAG و فاین‌تیون رو خلاصه بگو")
 print(answer)
 ```
-
-<div dir="rtl">
 
 > 💡 **نکته:** اگه `stream` رو `True` بذاری، جواب توکن‌به‌توکن میاد (مثل چت واقعی). ولی برای شروع، `False` راحت‌تره.
 
@@ -5616,8 +5471,6 @@ print(answer)
 
 خوبیِ کار با LangChain اینه که کل دستیار توی یه اسکریپتِ تمیز و بدون متغیر سراسری جا می‌شه:
 
-</div>
-
 ```python
 # pip install langchain langchain-openai langchain-chroma langchain-text-splitters
 
@@ -5675,13 +5528,9 @@ print(chain.invoke("ساعت کاری پشتیبانی چنده؟"))
 # خروجی: پشتیبانی شنبه تا چهارشنبه، ۹ صبح تا ۵ عصر بازه. 🙌
 ```
 
-<div dir="rtl">
-
 دیدی چقدر تمیزتره؟ نه متغیر سراسری‌ای در کاره، نه تاریخچه‌ای که دستی دستکاری بشه؛ همه‌چی یه **زنجیره**‌ست که ورودی می‌گیره و جواب می‌ده.
 
 و چون [فصل ارزیابی](#ارزیابی-پرامپت-و-خروجی-llm-از-کجا-بفهمیم-خوبه-) رو جدی گرفتیم، قبل از تحویل با چند تستِ ساده می‌سنجیمش؛ از جمله یه سوالِ خارج از حوزه که باید جوابِ «نمی‌دونم» بگیره:
-
-</div>
 
 ```python
 test_cases = [
@@ -5694,8 +5543,6 @@ for case in test_cases:
     passed = case["must_have"] in answer
     print(f"{'✅' if passed else '❌'} {case['q']} ← {answer}")
 ```
-
-<div dir="rtl">
 
 > 💡 **از اینجا به بعد:** همین اسکلت رو می‌تونی حرفه‌ای‌تر کنی؛ [خروجی ساختاریافته](#ابزارها-و-خروجی-ساختاریافته-function-calling-️) برای جوابِ ماشین‌خوان، [ابزار و Function Calling](#ابزارها-و-خروجی-ساختاریافته-function-calling-️) برای کارهای واقعی مثل ثبت تیکت، یا تبدیلش به یه [عاملِ کامل](#عامل‌های-هوشمند-ai-agents-) که خودش تصمیم می‌گیره کِی جستجو کنه.
 
