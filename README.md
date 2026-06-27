@@ -147,6 +147,10 @@
     *   ۶. محدودیت‌های پنجره محتوایی (Context Window) ⏳ [🔗](#۶-محدودیت‌های-پنجره-محتوایی-context-window-)
     *   ۷. دانش قدیمی یا محدودیت زمانی (Outdated Knowledge) ⏰ [🔗](#۷-دانش-قدیمی-یا-محدودیت-زمانی-outdated-knowledge-)
     *   ۸. عدم درک مفاهیم عمیق یا حالات احساسی ❤️‍🩹 [🔗](#۸-عدم-درک-مفاهیم-عمیق-یا-حالات-احساسی-️‍)
+    *   ۹. تملق‌گویی (Sycophancy) 🪞 [🔗](#۹-تملق‌گویی-sycophancy-)
+    *   ۱۰. گم شدن در میانه متن (Lost in the Middle) 📄 [🔗](#۱۰-گم-شدن-در-میانه-متن-lost-in-the-middle-)
+    *   ۱۱. حساسیت به نحوه بیان (Sensitivity to Phrasing) 🎲 [🔗](#۱۱-حساسیت-به-نحوه-بیان-sensitivity-to-phrasing-)
+    *   ۱۲. نشت داده و حریم خصوصی (Data Leakage / Privacy) 🔐 [🔗](#۱۲-نشت-داده-و-حریم-خصوصی-data-leakage--privacy-)
 *   **چطور دقت و امنیت LLM رو بالاتر ببریم؟ 🛡️** [🔗](#چطور-دقت-و-امنیت-llm-رو-بالاتر-ببریم-️)
     *   ۱. پرامپت‌نویسی هوشمند (Smart Prompting) 📝 [🔗](#۱-پرامپت‌نویسی-هوشمند-smart-prompting-)
     *   ۲. نظارت بر خروجی‌ها (Moderation & Policy) 🚦 [🔗](#۲-نظارت-بر-خروجی‌ها-moderation--policy-)
@@ -1200,6 +1204,8 @@ response = client.chat.completions.create(
     stop=["\n\n", "۴."],  # وقتی به خط خالی یا شماره ۴ رسید، متوقف شو
 )
 ```
+
+> 💡 **نکته:** همه مدل‌ها و APIها `stop` رو یک‌جور پشتیبانی نمی‌کنن؛ بعضی‌ها سقف تعداد رشته‌های `stop` دارن یا اصلاً قبولش نمی‌کنن. اگه جوابی گرفتی که توقعش رو نداشتی، داک رسمی مدلت رو چک کن.
 
 ---
 
@@ -2466,7 +2472,7 @@ from pydantic import BaseModel, Field
 class UserInfo(BaseModel):
     """اطلاعات استخراج شده از معرفی کاربر"""
     name: str = Field(description="نام کاربر")
-    age: Optional[int] = Field(description="سن کاربر (اگر ذکر شده باشد)")
+    age: Optional[int] = Field(default=None, description="سن کاربر (اگر ذکر شده باشد)")
     skills: list[str] = Field(description="لیست مهارت‌های فنی")
 
 # ۲. ساخت مدل (با قابلیت Structured Output)
