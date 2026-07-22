@@ -1,0 +1,152 @@
+name: Release book
+run-name: Prepare book ${{ inputs.version }} draft release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Semantic version for the book release
+        required: true
+        type: string
+        default: v1.0.0
+      prerelease:
+        description: Mark the draft as a prerelease
+        required: true
+        type: boolean
+        default: false
+
+concurrency:
+  group: book-release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build and verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - name: Check out the selected main commit
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Validate main and release version
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_VERSION: ${{ inputs.version }}
+          REQUESTED_PRERELEASE: ${{ inputs.prerelease }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "Book releases must be prepared from main; selected ref was $GITHUB_REF." >&2
+            exit 1
+          fi
+
+          version="$REQUESTED_VERSION"
+          if [[ ! "$version" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+            echo "Invalid release version: $version. Use vMAJOR.MINOR.PATCH." >&2
+            exit 1
+          fi
+          if [[ "$version" == *-* && "$REQUESTED_PRERELEASE" != "true" ]]; then
+            echo "A prerelease version suffix requires the prerelease option." >&2
+            exit 1
+          fi
+          if [[ "$version" != *-* && "$REQUESTED_PRERELEASE" == "true" ]]; then
+            echo "The prerelease option requires a version suffix such as -rc.1." >&2
+            exit 1
+          fi
+
+          git fetch --force --tags origin
+          if git rev-parse --quiet --verify "refs/tags/$version" >/dev/null; then
+            echo "Tag $version already exists." >&2
+            exit 1
+          fi
+          if gh release view "$version" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $version already exists." >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build and fully verify both PDF qualities
+        uses: 3lf/readme-press@v0.1.0
+        with:
+          command: pipeline
+          config: book/readme-press.config.mjs
+          release-version: ${{ steps.release.outputs.version }}
+          source-commit: ${{ github.sha }}
+          render-all: true
+
+      - name: Recheck release checksums
+        working-directory: book/dist
+        run: sha256sum --check SHA256SUMS.txt
+
+      - name: Upload verified workflow artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: llm-for-humans-book-${{ steps.release.outputs.version }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            book/dist/llm-for-humans-book.pdf
+            book/dist/llm-for-humans-book-high-quality.pdf
+            book/dist/SHA256SUMS.txt
+            book/dist/manifest.json
+            book/dist/release-notes.md
+
+  draft-release:
+    name: Create draft release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - name: Download verified release artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: llm-for-humans-book-${{ needs.build.outputs.version }}
+          path: release-assets
+
+      - name: Create the draft GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+          PRERELEASE: ${{ inputs.prerelease }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION was created while the build was running." >&2
+            exit 1
+          fi
+          if gh release view "$VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $VERSION was created while the build was running." >&2
+            exit 1
+          fi
+
+          notes="$(< release-assets/release-notes.md)"
+          flags=(
+            --repo "$GITHUB_REPOSITORY"
+            --target "$GITHUB_SHA"
+            --title "LLM به زبان آدمیزاد $VERSION"
+            --draft
+            --generate-notes
+            --notes "$notes"
+          )
+          if [[ "$PRERELEASE" == "true" ]]; then
+            flags+=(--prerelease --latest=false)
+          fi
+
+          gh release create "$VERSION" \
+            "release-assets/llm-for-humans-book.pdf#نسخه عادی برای مطالعه و اشتراک‌گذاری" \
+            "release-assets/llm-for-humans-book-high-quality.pdf#نسخه باکیفیت برای چاپ و آرشیو" \
+            "release-assets/SHA256SUMS.txt#هش‌های SHA-256" \
+            "${flags[@]}"
+
+          echo "Draft release $VERSION is ready for review and manual publication."

@@ -1,1 +1,5 @@
 *.log
+.readme-press/
+book/.readme-press-cache/
+book/dist/
+.DS_Store
