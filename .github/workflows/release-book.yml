@@ -74,7 +74,7 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Build and fully verify both PDF qualities
-        uses: 3lf/readme-press@v0.1.0
+        uses: 3lf/readme-press@v0.1.1
         with:
           command: pipeline
           config: book/readme-press.config.mjs

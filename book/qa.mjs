@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { findUnsafeGitHubBlockStarts } from './source-qa.mjs';
 
 function readOutputHtml(config, manifest, quality) {
   const output = manifest.outputs?.[quality];
@@ -136,7 +137,22 @@ export default async function runProjectQa({ config, manifest, check }) {
     (match) => Number(match[3]) / Number(match[2]) > 1.4 !== match[1].split(/\s+/).includes('diagram--tall'),
   );
   check(figureSizes.length === 50 && tallMismatch.length === 0, 'tall figures follow the ratio rule', `${figureSizes.length} figures`);
-  check((html.match(/callout-star/g) ?? []).length === 1, 'GitHub star callout is styled once');
+  const expectedCallouts = {
+    note: 70,
+    tip: 35,
+    warn: 15,
+    date: 1,
+    new: 1,
+    star: 1,
+  };
+  const calloutCount = (html.match(/class="callout\s/g) ?? []).length;
+  check(calloutCount === 123, 'all source callouts keep their book styling', String(calloutCount));
+  for (const [kind, expected] of Object.entries(expectedCallouts)) {
+    const actual = (html.match(new RegExp(`callout-${kind}`, 'g')) ?? []).length;
+    check(actual === expected, `${kind} callout inventory is stable`, `${actual}/${expected}`);
+  }
+  check((html.match(/callout--agent-loop-caption/g) ?? []).length === 1, 'agent loop caption keeps its pagination class');
+  check((html.match(/callout--model-selection-closing/g) ?? []).length === 1, 'model selection closing keeps its pagination class');
   check(!html.includes('repo-footer-link'), 'no fragile running footer link remains');
   check(!/<br>\s*<br>\s*<\/div>\s*<\/section>/.test(html), 'chapter separators cannot spill onto an empty page');
 
@@ -159,6 +175,12 @@ export default async function runProjectQa({ config, manifest, check }) {
   check(source.includes('توی GitHub به پروژه ستاره بده'), 'README names GitHub in the star request');
   check(source.includes('«میکنه» (بدون فاصله: غلط)'), 'no-ZWNJ example is visibly distinct');
   check(!/(^|[^\u0600-\u06FF])کوتای?($|[^\u0600-\u06FF])/mu.test(source), 'quota is written in natural Persian');
+  const unsafeGitHubBlockStarts = findUnsafeGitHubBlockStarts(source);
+  check(
+    unsafeGitHubBlockStarts.ltr.length === 0,
+    'GitHub prose blocks never take their direction from Latin text',
+    `lines: ${unsafeGitHubBlockStarts.ltr.join(', ') || 'none'}`,
+  );
 
   const cheatSheetStart = source.indexOf('# چیت‌شیت سریع 📋');
   const cheatSheetEnd = source.indexOf('# اشتباهات رایج (این کارها رو نکن!) ❌', cheatSheetStart);
