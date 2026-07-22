@@ -1,12 +1,24 @@
 <div dir="rtl">
 
 <div align="center">
-<img src="images/poster.jpg" alt="LLM for Humans Poster">
-<p>
-<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf">📘 دانلود نسخه عادی کتاب</a>
-·
-<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-high-quality.pdf">🖨️ دانلود نسخه باکیفیت برای چاپ</a>
-</p>
+<a href="https://github.com/3lf/llm-for-humans/releases/latest"><img src="images/book-preview.png" alt="پیش‌نمایش نسخه PDF کتاب LLM به زبان آدمیزاد"></a>
+
+<p><strong>نسخه PDF کتاب</strong></p>
+
+<table width="100%">
+<tr>
+<td align="center" width="50%">
+<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf"><strong>دانلود مستقیم نسخه عادی</strong></a>
+<br>
+<sub>کم‌حجم‌تر؛ مناسب مطالعه و اشتراک‌گذاری</sub>
+</td>
+<td align="center" width="50%">
+<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-high-quality.pdf"><strong>دانلود مستقیم نسخه باکیفیت</strong></a>
+<br>
+<sub>تصاویر بدون افت؛ مناسب چاپ و آرشیو</sub>
+</td>
+</tr>
+</table>
 </div>
 
 
