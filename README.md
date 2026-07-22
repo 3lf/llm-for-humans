@@ -1,12 +1,7 @@
 <div dir="rtl">
 
 <div align="center">
-<img src="images/poster.jpg" alt="LLM for Humans Poster">
-<p>
-<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf">📘 دانلود نسخه عادی کتاب</a>
-·
-<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-high-quality.pdf">🖨️ دانلود نسخه باکیفیت برای چاپ</a>
-</p>
+<a href="https://github.com/3lf/llm-for-humans/releases/latest"><img src="images/book-preview.png" alt="پیش‌نمایش نسخه PDF کتاب LLM به زبان آدمیزاد"></a>
 </div>
 
 
@@ -27,6 +22,8 @@
 حالا داستان **مدل‌های زبانی بزرگ (LLMها)** هم همینه. این روزا اسم ChatGPT و Claude و Gemini همه‌جا هست و تقریباً همه یه جوری باهاشون سروکار دارن. ولی سوال اصلی اینه: چطور می‌شه **بهتر** ازشون کار کشید؟ چطور باید باهاشون حرف زد (یا به قول فنی‌ها، **پرامپت نوشت**) که دقیقاً همون چیزی رو که می‌خوایم بهمون بدن؟
 
 دیدم اینجا هم جای یه راهنمای **ساده و خودمونی** خالیه. برای همین این ریپو رو ساختم تا مثل دفعه قبل، روش‌های کار با LLMها رو **روون و راحت** توضیح بدم؛ از نوشتن یه **پرامپت خوب** شروع می‌کنیم و قدم‌به‌قدم می‌ریم سراغ مفاهیم عمیق‌تر و کلی **نکته و ترفند کاربردی**.
+
+نسخه PDF همین راهنما هم آماده‌ست: [از صفحه انتشارها، نسخه عادی یا نسخه باکیفیت برای چاپ رو بگیر.](https://github.com/3lf/llm-for-humans/releases/latest)
 
 **توی این راهنما چی یاد می‌گیری؟** 🎯
 *   مفاهیم پایه: توکن، امبدینگ و اینکه مدل واقعاً چطوری جواب می‌سازه
