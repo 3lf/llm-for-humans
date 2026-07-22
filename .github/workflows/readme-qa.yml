@@ -1,0 +1,31 @@
+name: README QA
+
+on:
+  pull_request:
+    paths:
+      - README.md
+      - book/source-qa.mjs
+      - .github/workflows/readme-qa.yml
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+      - book/source-qa.mjs
+      - .github/workflows/readme-qa.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rtl-source:
+    name: Check GitHub RTL block direction
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@v7
+
+      - name: Reject prose whose first strong character is Latin
+        run: node book/source-qa.mjs README.md

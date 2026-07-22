@@ -64,7 +64,7 @@ export default {
   },
   contentRules: {
     calloutClassRules: [
-      { contains: 'Agent نتیجه ابزار رو می‌بینه', className: 'callout--agent-loop-caption' },
+      { contains: 'ایجنت (Agent) نتیجه ابزار رو می‌بینه', className: 'callout--agent-loop-caption' },
       { contains: 'بهترین مدل، مدلیه که روی سناریوهای واقعی تو', className: 'callout--model-selection-closing' },
     ],
     paragraphClassRules: [
@@ -102,23 +102,19 @@ export default {
   },
   release: {
     copy: {
-      intro: 'این نسخه از کتاب «LLM به زبان آدمیزاد» از یک محتوای واحد در دو کیفیت آماده شده است.',
-      filesTitle: 'فایل‌های این انتشار',
-      file: 'فایل',
-      purpose: 'کاربرد',
-      pages: 'صفحه',
-      size: 'حجم',
-      normalPurpose: 'نسخه عادی برای مطالعه، دانلود و اشتراک‌گذاری',
-      highPurpose: 'نسخه باکیفیت با تصاویر PNG بدون افت برای چاپ و آرشیو',
-      parity: 'متن، صفحه‌بندی، لینک‌ها و ساختار هر دو نسخه یکسان است؛ تفاوت فقط در شیوه ذخیره تصاویر کتاب است.',
-      validationTitle: 'اعتبارسنجی',
-      validation: [
-        'هر دو PDF با QA کامل README Press و `qpdf --check` بررسی شده‌اند.',
-        'تصاویر نسخه باکیفیت پس از استخراج با فایل‌های PNG منبع تطبیق داده شده‌اند.',
-        'فایل `SHA256SUMS.txt` برای بررسی صحت دانلودها ضمیمه شده است.',
-      ],
-      sourceCommit: 'کامیت منبع',
-      version: 'نسخه',
+      intro: 'LLM for Humans, in two verified PDF editions.',
+      filesTitle: 'Downloads',
+      file: 'File',
+      purpose: 'Edition',
+      pages: 'Pages',
+      size: 'Size',
+      normalPurpose: 'Standard',
+      highPurpose: 'High quality',
+      parity: 'Same content and layout; only image quality differs.',
+      validationTitle: 'Verification',
+      validation: ['Full PDF, rendering, and image QA passed.'],
+      sourceCommit: 'Source',
+      version: 'Version',
     },
   },
 };
