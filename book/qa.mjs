@@ -14,6 +14,7 @@ export default async function runProjectQa({ config, manifest, check }) {
   const html = normalHtml ?? highHtml ?? '';
   const css = readFileSync(config.theme.stylesheet, 'utf8');
   const repositoryQr = readFileSync(resolve(config.outputDir, manifest.repositoryQr.asset), 'utf8');
+  const releaseMetadata = config.qa.releaseMetadata;
 
   check(manifest.parts.length === 9, 'project has nine configured parts', String(manifest.parts.length));
   check(manifest.chapters.length === 30, 'project has the expected chapter inventory', String(manifest.chapters.length));
@@ -42,8 +43,8 @@ export default async function runProjectQa({ config, manifest, check }) {
     check(
       output.repositoryFooter?.stampedPages === output.pageCount - 1
         && output.repositoryFooter?.artifact === true
-        && output.repositoryFooter?.text === 'github.com/3lf/llm-for-humans',
-      `${output.quality} repository footer covers every body page as an artifact`,
+        && output.repositoryFooter?.text === config.repository.url,
+      `${output.quality} repository footer uses the absolute URL on every body page`,
       `${output.repositoryFooter?.stampedPages ?? 0} pages`,
     );
     check(
@@ -58,6 +59,16 @@ export default async function runProjectQa({ config, manifest, check }) {
       'high-quality PDF preserves the larger lossless image set',
       `${manifest.outputs.high.bytes} > ${manifest.outputs.normal.bytes}`,
     );
+  }
+  check(manifest.metadata?.edition === config.metadata.edition, 'manifest records the configured edition');
+  check(manifest.metadata?.localDate === config.metadata.localDate, 'manifest records the configured Persian date');
+  check(manifest.metadata?.latinDate === config.metadata.latinDate, 'manifest records the configured Latin cover line');
+  if (releaseMetadata?.isRelease) {
+    const plainHtml = html.replace(/<[^>]+>/g, '');
+    check(manifest.releaseVersion === releaseMetadata.releaseVersion, 'manifest release version matches pipeline metadata');
+    check(plainHtml.includes(releaseMetadata.persianDate), 'colophon uses the pipeline Persian release date');
+    check(plainHtml.includes(releaseMetadata.gregorianDate), 'colophon uses the pipeline Gregorian release date');
+    check(plainHtml.includes(releaseMetadata.releaseVersion), 'colophon shows the pipeline release version');
   }
 
   const imageDirectory = resolve(config.projectRoot, '../images');
