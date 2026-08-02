@@ -33,9 +33,10 @@ brew install poppler qpdf
 ```bash
 git clone --branch v0.1.1 --depth 1 https://github.com/3lf/readme-press.git .readme-press
 npm ci --prefix .readme-press
+npm ci --prefix book
 ```
 
-هر وقت نسخه README Press در workflow عوض شد، شماره tag همین فرمان هم باید با اون هماهنگ بشه.
+فرمان آخر کتابخانه تبدیل دقیق تاریخ جلالی رو نصب می‌کنه. هر وقت نسخه README Press در workflow عوض شد، شماره tag همین فرمان هم باید با اون هماهنگ بشه.
 
 ## خروجی دلخواهت رو بساز 🏗️
 
@@ -86,12 +87,18 @@ node .readme-press/bin/readme-press.mjs qa \
 برای ساخت، بررسی کامل و آماده‌کردن فایل‌های انتشار با یک فرمان می‌تونی از پایپلاین استفاده کنی:
 
 ```bash
+release_version=v1.1.0
+release_date="$(TZ=Asia/Tehran date +%F)"
+README_PRESS_RELEASE_VERSION="$release_version" \
+README_PRESS_RELEASE_DATE="$release_date" \
 node .readme-press/bin/readme-press.mjs pipeline \
   --config book/readme-press.config.mjs \
-  --release-version v1.0.0 \
+  --release-version "$release_version" \
   --commit FULL_GIT_COMMIT \
   --render-all
 ```
+
+پایپلاین GitHub همین تاریخ رو یک بار با منطقه زمانی `Asia/Tehran` ثبت می‌کنه. بعد `jalaali-js` اون رو به تاریخ شمسی تبدیل می‌کنه و نسخه انتشار و هر دو تاریخ شمسی و میلادی رو روی جلد و صفحه شناسنامه می‌نویسه. اگه نسخه یا تاریخ ناقص یا نامعتبر باشه، ساخت PDF متوقف می‌شه.
 
 ## نسخه جدید رو منتشر کن 🚀
 
@@ -107,7 +114,7 @@ node .readme-press/bin/readme-press.mjs pipeline \
 
 ## حواست به فایل‌های محلی باشه 🧹
 
-پوشه `.readme-press/`، خروجی‌های `book/dist/`، فایل‌های PDF و کش‌های ساخت عمداً نباید وارد commit بشن. این مسیرها برای حفظ تاریخ قدیمی `.gitignore` به اون فایل اضافه نمی‌شن؛ پس قبل از هر commit حتماً وضعیت Git رو ببین و فقط فایل‌های لازم رو با اسم دقیق stage کن.
+پوشه `.readme-press/`، پوشه `book/node_modules/`، خروجی‌های `book/dist/`، فایل‌های PDF و کش‌های ساخت عمداً نباید وارد commit بشن. این مسیرها برای حفظ تاریخ قدیمی `.gitignore` به اون فایل اضافه نمی‌شن؛ پس قبل از هر commit حتماً وضعیت Git رو ببین و فقط فایل‌های لازم رو با اسم دقیق stage کن.
 
 ```bash
 git status --short

@@ -1,0 +1,12 @@
+{
+  "name": "llm-for-humans-book-metadata",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test release-metadata.test.mjs"
+  },
+  "dependencies": {
+    "jalaali-js": "2.0.0"
+  }
+}

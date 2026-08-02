@@ -1,3 +1,7 @@
+import { resolveBookMetadata } from './release-metadata.mjs';
+
+const bookMetadata = resolveBookMetadata();
+
 export default {
   source: '../README.md',
   outputDir: 'dist',
@@ -6,9 +10,9 @@ export default {
     title: 'LLM به زبان آدمیزاد',
     subtitle: 'راهنمای فارسیِ مدل‌های زبانی بزرگ',
     author: 'علی نجفی',
-    edition: 'ویرایش اول · ۲۳ تیر ۱۴۰۵ · 14 July 2026',
-    localDate: '۲۳ تیر ۱۴۰۵',
-    latinDate: '14 July 2026',
+    edition: bookMetadata.edition,
+    localDate: bookMetadata.localDate,
+    latinDate: bookMetadata.latinDate,
     language: 'fa',
     direction: 'rtl',
     numerals: 'persian',
@@ -19,6 +23,9 @@ export default {
   repository: {
     url: 'https://github.com/3lf/llm-for-humans',
     branch: 'main',
+  },
+  footer: {
+    text: 'https://github.com/3lf/llm-for-humans',
   },
   cover: {
     titlePrefix: 'LLM',
@@ -99,6 +106,7 @@ export default {
       'https://github.com/3lf/llm-for-humans/blob/main/CONTRIBUTING.md',
       'https://github.com/3lf/llm-for-humans/blob/main/LICENSE',
     ],
+    releaseMetadata: bookMetadata,
   },
   release: {
     copy: {
