@@ -5,10 +5,10 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Stable v1.0.0 or prerelease v1.1.0-rc.1
+        description: Stable v1.0.1 or prerelease v1.1.0-rc.1
         required: true
         type: string
-        default: v1.0.0
+        default: v1.0.1
 
 concurrency:
   group: book-release
@@ -64,8 +64,32 @@ jobs:
             echo "prerelease=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: book/package-lock.json
+
+      - name: Install and test book metadata
+        run: |
+          npm ci --prefix book
+          npm test --prefix book
+
+      - name: Capture the release date in Iran time
+        id: release-date
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_date="$(TZ=Asia/Tehran date +%F)"
+          echo "date=$release_date" >> "$GITHUB_OUTPUT"
+          echo "Release date: $release_date (Asia/Tehran)"
+
       - name: Build and fully verify both PDF qualities
-        uses: 3lf/readme-press@v0.1.1
+        uses: 3lf/readme-press@v0.1.3
+        env:
+          README_PRESS_RELEASE_VERSION: ${{ steps.release.outputs.version }}
+          README_PRESS_RELEASE_DATE: ${{ steps.release-date.outputs.date }}
         with:
           command: pipeline
           config: book/readme-press.config.mjs

@@ -4,14 +4,28 @@ on:
   pull_request:
     paths:
       - README.md
+      - book/package-lock.json
+      - book/package.json
+      - book/qa.mjs
+      - book/readme-press.config.mjs
+      - book/release-metadata.mjs
+      - book/release-metadata.test.mjs
       - book/source-qa.mjs
+      - .github/workflows/release-book.yml
       - .github/workflows/readme-qa.yml
   push:
     branches:
       - main
     paths:
       - README.md
+      - book/package-lock.json
+      - book/package.json
+      - book/qa.mjs
+      - book/readme-press.config.mjs
+      - book/release-metadata.mjs
+      - book/release-metadata.test.mjs
       - book/source-qa.mjs
+      - .github/workflows/release-book.yml
       - .github/workflows/readme-qa.yml
   workflow_dispatch:
 
@@ -19,13 +33,69 @@ permissions:
   contents: read
 
 jobs:
-  rtl-source:
-    name: Check GitHub RTL block direction
+  source-and-metadata:
+    name: Check source and release metadata
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Check out the source
         uses: actions/checkout@v7
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: book/package-lock.json
+
+      - name: Test release metadata
+        run: |
+          npm ci --prefix book
+          npm test --prefix book
+          node --check book/qa.mjs
+          node --check book/readme-press.config.mjs
+
       - name: Reject prose whose first strong character is Latin
         run: node book/source-qa.mjs README.md
+
+  workflow-syntax:
+    name: Check workflow syntax
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@v7
+
+      - name: Validate GitHub Actions workflows
+        run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 .github/workflows/*.yml
+
+  book:
+    name: Build and fully verify both PDF qualities
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: book/package-lock.json
+
+      - name: Install book metadata dependency
+        run: npm ci --prefix book
+
+      - name: Build and verify the complete book
+        uses: 3lf/readme-press@v0.1.3
+        env:
+          README_PRESS_RELEASE_VERSION: v0.0.0-ci
+          README_PRESS_RELEASE_DATE: '2026-08-02'
+        with:
+          command: pipeline
+          config: book/readme-press.config.mjs
+          release-version: v0.0.0-ci
+          source-commit: ${{ github.sha }}
+          render-all: true

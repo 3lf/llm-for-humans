@@ -31,11 +31,12 @@ brew install poppler qpdf
 برای اینکه نتیجه سیستم تو با GitHub Actions یکی باشه، دقیقاً همون نسخه‌ای از README Press رو بگیر که workflow پروژه استفاده می‌کنه:
 
 ```bash
-git clone --branch v0.1.1 --depth 1 https://github.com/3lf/readme-press.git .readme-press
+git clone --branch v0.1.3 --depth 1 https://github.com/3lf/readme-press.git .readme-press
 npm ci --prefix .readme-press
+npm ci --prefix book
 ```
 
-هر وقت نسخه README Press در workflow عوض شد، شماره tag همین فرمان هم باید با اون هماهنگ بشه.
+فرمان آخر کتابخانه تبدیل دقیق تاریخ جلالی رو نصب می‌کنه. هر وقت نسخه README Press در workflow عوض شد، شماره tag همین فرمان هم باید با اون هماهنگ بشه.
 
 ## خروجی دلخواهت رو بساز 🏗️
 
@@ -81,17 +82,23 @@ node .readme-press/bin/readme-press.mjs qa \
 
 این فرمان ساختار PDF، فونت‌ها، لینک‌ها، مقصدهای داخلی، تصاویر، برابری دو کیفیت و رندر تک‌تک صفحه‌ها رو بررسی می‌کنه. بعدش هم `book/qa.mjs` سراغ قواعد مخصوص همین پروژه می‌ره.
 
-برای تغییرهای عادی README، گردش‌کار سبک `README QA` روی هر PR اجرا می‌شه و قبل از merge، بلوکی رو می‌گیره که اولین نویسه قوی اون لاتینه؛ فرقی هم نمی‌کنه خط مستقیم با متن لاتین شروع شده باشه یا بعد از ایموجی. ایموجی قبل از متن فارسی مشکلی نداره. این بررسی هیچ PDF یا Release تازه‌ای منتشر نمی‌کنه.
+گردش‌کار `README QA` روی هر PR، متن فارسی، اطلاعات انتشار، ساختار workflow و خروجی کامل هر دو کیفیت PDF رو بررسی می‌کنه. همین بررسی بلوکی رو هم می‌گیره که اولین نویسه قوی اون لاتینه؛ فرقی نمی‌کنه خط مستقیم با متن لاتین شروع شده باشه یا بعد از ایموجی. ایموجی قبل از متن فارسی مشکلی نداره. این گردش‌کار فقط فایل‌ها رو می‌سازه و بررسی می‌کنه و هیچ Release تازه‌ای منتشر نمی‌کنه.
 
 برای ساخت، بررسی کامل و آماده‌کردن فایل‌های انتشار با یک فرمان می‌تونی از پایپلاین استفاده کنی:
 
 ```bash
+release_version=v1.0.1
+release_date="$(TZ=Asia/Tehran date +%F)"
+README_PRESS_RELEASE_VERSION="$release_version" \
+README_PRESS_RELEASE_DATE="$release_date" \
 node .readme-press/bin/readme-press.mjs pipeline \
   --config book/readme-press.config.mjs \
-  --release-version v1.0.0 \
+  --release-version "$release_version" \
   --commit FULL_GIT_COMMIT \
   --render-all
 ```
+
+پایپلاین GitHub همین تاریخ رو یک بار با منطقه زمانی `Asia/Tehran` ثبت می‌کنه. بعد `jalaali-js` اون رو به تاریخ شمسی تبدیل می‌کنه و نسخه انتشار و هر دو تاریخ شمسی و میلادی رو روی جلد و صفحه شناسنامه می‌نویسه. اگه نسخه یا تاریخ ناقص یا نامعتبر باشه، ساخت PDF متوقف می‌شه.
 
 ## نسخه جدید رو منتشر کن 🚀
 
@@ -99,7 +106,7 @@ node .readme-press/bin/readme-press.mjs pipeline \
 
 - **قدم اول:** وارد بخش Actions ریپو شو.
 - **قدم دوم:** گردش‌کار `Release book` رو باز کن.
-- **قدم سوم:** برای انتشار پایدار شماره‌ای مثل `v1.0.0` و برای نسخه آزمایشی شماره‌ای مثل `v1.1.0-rc.1` وارد کن؛ نوع انتشار از روی همین پسوند تشخیص داده می‌شه.
+- **قدم سوم:** برای انتشار پایدار شماره‌ای مثل `v1.0.1` و برای نسخه آزمایشی شماره‌ای مثل `v1.1.0-rc.1` وارد کن؛ نوع انتشار از روی همین پسوند تشخیص داده می‌شه.
 - **قدم چهارم:** صبر کن تا ساخت و QA کامل هر دو نسخه سبز بشه.
 - **قدم پنجم:** نسخه Draft ساخته‌شده رو بازبینی کن و فقط وقتی مطمئنی، منتشرش کن.
 
@@ -107,11 +114,11 @@ node .readme-press/bin/readme-press.mjs pipeline \
 
 ## حواست به فایل‌های محلی باشه 🧹
 
-پوشه `.readme-press/`، خروجی‌های `book/dist/`، فایل‌های PDF و کش‌های ساخت عمداً نباید وارد commit بشن. این مسیرها برای حفظ تاریخ قدیمی `.gitignore` به اون فایل اضافه نمی‌شن؛ پس قبل از هر commit حتماً وضعیت Git رو ببین و فقط فایل‌های لازم رو با اسم دقیق stage کن.
+پوشه `.readme-press/`، پوشه `book/node_modules/`، خروجی‌های `book/dist/`، فایل‌های PDF و کش‌های ساخت عمداً نباید وارد commit بشن. این مسیرها برای حفظ تاریخ قدیمی `.gitignore` به اون فایل اضافه نمی‌شن؛ پس قبل از هر commit حتماً وضعیت Git رو ببین و فقط فایل‌های لازم رو با اسم دقیق stage کن.
 
 ```bash
 git status --short
-git add README.md book/README.md book/qa.mjs book/readme-press.config.mjs
+git add README.md book/README.md book/package.json book/package-lock.json book/qa.mjs book/readme-press.config.mjs book/release-metadata.mjs book/release-metadata.test.mjs
 git diff --cached --name-status
 ```
 
