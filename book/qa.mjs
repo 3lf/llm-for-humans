@@ -10,8 +10,9 @@ function readOutputHtml(config, manifest, quality) {
 export default async function runProjectQa({ config, manifest, check }) {
   const source = readFileSync(config.sourcePath, 'utf8');
   const normalHtml = readOutputHtml(config, manifest, 'normal');
+  const printHtml = readOutputHtml(config, manifest, 'print');
   const highHtml = readOutputHtml(config, manifest, 'high');
-  const html = normalHtml ?? highHtml ?? '';
+  const html = normalHtml ?? printHtml ?? highHtml ?? '';
   const css = readFileSync(config.theme.stylesheet, 'utf8');
   const repositoryQr = readFileSync(resolve(config.outputDir, manifest.repositoryQr.asset), 'utf8');
   const releaseMetadata = config.qa.releaseMetadata;
@@ -60,6 +61,17 @@ export default async function runProjectQa({ config, manifest, check }) {
       `${manifest.outputs.high.bytes} > ${manifest.outputs.normal.bytes}`,
     );
   }
+  if (manifest.outputs?.print && manifest.outputs?.high) {
+    check(
+      manifest.outputs.print.imageMode === 'source-png-lossless-print-palette',
+      'print PDF uses lossless figures and the print palette',
+      manifest.outputs.print.imageMode,
+    );
+    check(
+      manifest.outputs.print.sha256 !== manifest.outputs.high.sha256,
+      'print and full-color high-quality PDFs are distinct artifacts',
+    );
+  }
   check(manifest.metadata?.edition === config.metadata.edition, 'manifest records the configured edition');
   check(manifest.metadata?.localDate === config.metadata.localDate, 'manifest records the configured Persian date');
   check(manifest.metadata?.latinDate === config.metadata.latinDate, 'manifest records the configured Latin cover line');
@@ -94,6 +106,13 @@ export default async function runProjectQa({ config, manifest, check }) {
   check(manifest.optimizedFigures?.length === 50, 'normal figure catalog is complete', String(manifest.optimizedFigures?.length ?? 0));
   check(manifest.highQualityFigures?.length === 50, 'lossless figure catalog is complete', String(manifest.highQualityFigures?.length ?? 0));
   if (normalHtml) check(!/images\/vis-[^"']+\.png/.test(normalHtml), 'normal HTML uses optimized JPEG figures');
+  if (printHtml) {
+    check(!/images\/vis-[^"']+\.jpg/.test(printHtml), 'print HTML uses source PNG figures');
+    check(
+      printHtml.includes('data-readme-press-variant="print"'),
+      'print HTML activates the ink-efficient theme variant',
+    );
+  }
   if (highHtml) check(!/images\/vis-[^"']+\.jpg/.test(highHtml), 'high-quality HTML uses source PNG figures');
 
   check((html.match(/class="promptblock/g) ?? []).length === 1, 'one LTR prompt block is detected');

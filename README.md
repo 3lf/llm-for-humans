@@ -3,19 +3,28 @@
 <div align="center">
 <a href="https://github.com/3lf/llm-for-humans/releases/latest"><img src="images/book-preview.png" alt="پیش‌نمایش نسخه PDF کتاب LLM به زبان آدمیزاد"></a>
 
-<p><strong>نسخه PDF کتاب</strong></p>
+<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf"><img src="images/download-latest-book.svg" alt="دانلود مستقیم تازه‌ترین نسخه PDF کتاب LLM به زبان آدمیزاد" width="680"></a>
+
+<p><sub>با یک کلیک، تازه‌ترین نسخه عادی کتاب رو مستقیم دانلود کن.</sub></p>
+
+<p><strong>نسخه مناسب خودت رو انتخاب کن:</strong></p>
 
 <table width="100%">
 <tr>
-<td align="center" width="50%">
+<td align="center" width="33%">
 <a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf"><strong>دانلود مستقیم نسخه عادی</strong></a>
 <br>
 <sub>کم‌حجم‌تر؛ مناسب مطالعه و اشتراک‌گذاری</sub>
 </td>
-<td align="center" width="50%">
+<td align="center" width="34%">
+<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-print.pdf"><strong>دانلود مستقیم نسخه مناسب چاپ</strong></a>
+<br>
+<sub>پس‌زمینه سفید و تصاویر رنگی بدون افت؛ کم‌مصرف برای چاپ</sub>
+</td>
+<td align="center" width="33%">
 <a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-high-quality.pdf"><strong>دانلود مستقیم نسخه باکیفیت</strong></a>
 <br>
-<sub>تصاویر بدون افت؛ مناسب چاپ و آرشیو</sub>
+<sub>طراحی تمام‌رنگی و تصاویر بدون افت؛ مناسب نمایش و آرشیو</sub>
 </td>
 </tr>
 </table>

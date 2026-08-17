@@ -70,7 +70,7 @@ jobs:
         run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 .github/workflows/*.yml
 
   book:
-    name: Build and fully verify both PDF qualities
+    name: Build and fully verify all three PDF editions
     if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -89,7 +89,7 @@ jobs:
         run: npm ci --prefix book
 
       - name: Build and verify the complete book
-        uses: 3lf/readme-press@v0.1.3
+        uses: 3lf/readme-press@4d27237e258c5b3d385d0a075096074dd710c9f3
         env:
           README_PRESS_RELEASE_VERSION: v0.0.0-ci
           README_PRESS_RELEASE_DATE: '2026-08-02'

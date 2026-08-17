@@ -87,6 +87,7 @@ export default {
   },
   outputs: {
     normal: 'llm-for-humans-book.pdf',
+    print: 'llm-for-humans-book-print.pdf',
     high: 'llm-for-humans-book-high-quality.pdf',
   },
   qa: {
@@ -110,17 +111,18 @@ export default {
   },
   release: {
     copy: {
-      intro: 'LLM for Humans, in two verified PDF editions.',
+      intro: 'LLM for Humans, in three verified PDF editions.',
       filesTitle: 'Downloads',
       file: 'File',
       purpose: 'Edition',
       pages: 'Pages',
       size: 'Size',
       normalPurpose: 'Standard',
-      highPurpose: 'High quality',
-      parity: 'Same content and layout; only image quality differs.',
+      printPurpose: 'Print friendly',
+      highPurpose: 'Full-color high quality',
+      parity: 'Same content and layout; only image encoding and the print palette differ.',
       validationTitle: 'Verification',
-      validation: ['Full PDF, rendering, and image QA passed.'],
+      validation: ['Full PDF, white-background, rendering, and image QA passed.'],
       sourceCommit: 'Source',
       version: 'Version',
     },

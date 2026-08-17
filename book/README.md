@@ -31,12 +31,13 @@ brew install poppler qpdf
 برای اینکه نتیجه سیستم تو با GitHub Actions یکی باشه، دقیقاً همون نسخه‌ای از README Press رو بگیر که workflow پروژه استفاده می‌کنه:
 
 ```bash
-git clone --branch v0.1.3 --depth 1 https://github.com/3lf/readme-press.git .readme-press
+git clone https://github.com/3lf/readme-press.git .readme-press
+git -C .readme-press checkout 4d27237e258c5b3d385d0a075096074dd710c9f3
 npm ci --prefix .readme-press
 npm ci --prefix book
 ```
 
-فرمان آخر کتابخانه تبدیل دقیق تاریخ جلالی رو نصب می‌کنه. هر وقت نسخه README Press در workflow عوض شد، شماره tag همین فرمان هم باید با اون هماهنگ بشه.
+فرمان آخر کتابخانه تبدیل دقیق تاریخ جلالی رو نصب می‌کنه. هر وقت نسخه README Press در workflow عوض شد، هش commit همین فرمان هم باید با اون هماهنگ بشه.
 
 ## خروجی دلخواهت رو بساز 🏗️
 
@@ -48,7 +49,15 @@ node .readme-press/bin/readme-press.mjs build \
   --quality normal
 ```
 
-برای ساخت نسخه باکیفیت و مناسب چاپ این فرمان رو اجرا کن:
+برای ساخت نسخه مناسب چاپ با پس‌زمینه سفید و تصاویر رنگی بدون افت، این فرمان رو اجرا کن:
+
+```bash
+node .readme-press/bin/readme-press.mjs build \
+  --config book/readme-press.config.mjs \
+  --quality print
+```
+
+برای ساخت نسخه تمام‌رنگی و باکیفیت این فرمان رو اجرا کن:
 
 ```bash
 node .readme-press/bin/readme-press.mjs build \
@@ -56,7 +65,7 @@ node .readme-press/bin/readme-press.mjs build \
   --quality high
 ```
 
-برای ساخت هر دو نسخه با یک فرمان از حالت `all` استفاده کن:
+برای ساخت هر سه نسخه با یک فرمان از حالت `all` استفاده کن:
 
 ```bash
 node .readme-press/bin/readme-press.mjs build \
@@ -64,14 +73,15 @@ node .readme-press/bin/readme-press.mjs build \
   --quality all
 ```
 
-در پایان این دو فایل داخل `book/dist/` ساخته می‌شن:
+در پایان این سه فایل داخل `book/dist/` ساخته می‌شن:
 
 - **نسخه عادی:** فایل `llm-for-humans-book.pdf` برای دانلود و اشتراک‌گذاری روزمره
-- **نسخه باکیفیت:** فایل `llm-for-humans-book-high-quality.pdf` با تصاویر PNG بدون افت برای چاپ و آرشیو
+- **نسخه مناسب چاپ:** فایل `llm-for-humans-book-print.pdf` با پس‌زمینه سفید و تصاویر رنگی PNG بدون افت
+- **نسخه باکیفیت:** فایل `llm-for-humans-book-high-quality.pdf` با طراحی تمام‌رنگی و تصاویر PNG بدون افت برای نمایش و آرشیو
 
 ## همه‌چیز رو کامل بررسی کن ✅
 
-ساخته‌شدن PDF به‌تنهایی کافی نیست. قبل از انتشار باید هر دو نسخه، همه صفحه‌ها و قواعد مخصوص کتاب بررسی بشن:
+ساخته‌شدن PDF به‌تنهایی کافی نیست. قبل از انتشار باید هر سه نسخه، همه صفحه‌ها و قواعد مخصوص کتاب بررسی بشن:
 
 ```bash
 node .readme-press/bin/readme-press.mjs qa \
@@ -80,9 +90,9 @@ node .readme-press/bin/readme-press.mjs qa \
   --render-all
 ```
 
-این فرمان ساختار PDF، فونت‌ها، لینک‌ها، مقصدهای داخلی، تصاویر، برابری دو کیفیت و رندر تک‌تک صفحه‌ها رو بررسی می‌کنه. بعدش هم `book/qa.mjs` سراغ قواعد مخصوص همین پروژه می‌ره.
+این فرمان ساختار PDF، فونت‌ها، لینک‌ها، مقصدهای داخلی، تصاویر، سفیدی پس‌زمینه نسخه چاپی، برابری سه نسخه و رندر تک‌تک صفحه‌ها رو بررسی می‌کنه. بعدش هم `book/qa.mjs` سراغ قواعد مخصوص همین پروژه می‌ره.
 
-گردش‌کار `README QA` روی هر PR، متن فارسی، اطلاعات انتشار، ساختار workflow و خروجی کامل هر دو کیفیت PDF رو بررسی می‌کنه. همین بررسی بلوکی رو هم می‌گیره که اولین نویسه قوی اون لاتینه؛ فرقی نمی‌کنه خط مستقیم با متن لاتین شروع شده باشه یا بعد از ایموجی. ایموجی قبل از متن فارسی مشکلی نداره. این گردش‌کار فقط فایل‌ها رو می‌سازه و بررسی می‌کنه و هیچ Release تازه‌ای منتشر نمی‌کنه.
+گردش‌کار `README QA` روی هر PR، متن فارسی، اطلاعات انتشار، ساختار workflow و خروجی کامل هر سه نسخه PDF رو بررسی می‌کنه. همین بررسی بلوکی رو هم می‌گیره که اولین نویسه قوی اون لاتینه؛ فرقی نمی‌کنه خط مستقیم با متن لاتین شروع شده باشه یا بعد از ایموجی. ایموجی قبل از متن فارسی مشکلی نداره. این گردش‌کار فقط فایل‌ها رو می‌سازه و بررسی می‌کنه و هیچ Release تازه‌ای منتشر نمی‌کنه.
 
 برای ساخت، بررسی کامل و آماده‌کردن فایل‌های انتشار با یک فرمان می‌تونی از پایپلاین استفاده کنی:
 
@@ -107,7 +117,7 @@ node .readme-press/bin/readme-press.mjs pipeline \
 - **قدم اول:** وارد بخش Actions ریپو شو.
 - **قدم دوم:** گردش‌کار `Release book` رو باز کن.
 - **قدم سوم:** برای انتشار پایدار شماره‌ای مثل `v1.0.1` و برای نسخه آزمایشی شماره‌ای مثل `v1.1.0-rc.1` وارد کن؛ نوع انتشار از روی همین پسوند تشخیص داده می‌شه.
-- **قدم چهارم:** صبر کن تا ساخت و QA کامل هر دو نسخه سبز بشه.
+- **قدم چهارم:** صبر کن تا ساخت و QA کامل هر سه نسخه سبز بشه.
 - **قدم پنجم:** نسخه Draft ساخته‌شده رو بازبینی کن و فقط وقتی مطمئنی، منتشرش کن.
 
 به این ترتیب هر تغییر کوچیک README بی‌دلیل نسخه تازه‌ای از کتاب منتشر نمی‌کنه و تصمیم نهایی همیشه دست خودته.
@@ -118,7 +128,7 @@ node .readme-press/bin/readme-press.mjs pipeline \
 
 ```bash
 git status --short
-git add README.md book/README.md book/package.json book/package-lock.json book/qa.mjs book/readme-press.config.mjs book/release-metadata.mjs book/release-metadata.test.mjs
+git add README.md images/download-latest-book.svg book/README.md book/package.json book/package-lock.json book/qa.mjs book/readme-press.config.mjs book/release-metadata.mjs book/release-metadata.test.mjs .github/workflows/readme-qa.yml .github/workflows/release-book.yml
 git diff --cached --name-status
 ```
 
