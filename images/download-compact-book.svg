@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="126" viewBox="0 0 420 126" role="img" aria-labelledby="title desc">
+  <title id="title">دانلود نسخه کم‌حجم کتاب</title>
+  <desc id="desc">دکمه دانلود مستقیم نسخه کم‌حجم کتاب LLM به زبان آدمیزاد</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d5b86"/>
+      <stop offset="1" stop-color="#123f73"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="416" height="122" rx="18" fill="url(#bg)" stroke="#d2b367" stroke-width="4"/>
+  <path d="M18 22H402M18 104H402" stroke="#ffffff" stroke-opacity=".13"/>
+  <g transform="translate(62 63)" fill="none" stroke="#f7efdc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="0" cy="0" r="29" stroke="#d2b367" stroke-width="2.75"/>
+    <path d="M0 -15V7M-10 -2L0 8L10 -2"/>
+    <path d="M-13 18H13"/>
+  </g>
+  <g text-anchor="middle" direction="rtl" unicode-bidi="plaintext" font-family="Tahoma, Arial, sans-serif">
+    <text x="256" y="43" font-size="15" fill="#f2d999">دانلود مستقیم</text>
+    <text x="256" y="80" font-size="27" font-weight="700" fill="#ffffff">نسخه کم‌حجم</text>
+  </g>
+</svg>
