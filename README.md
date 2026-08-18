@@ -1,30 +1,28 @@
 <div dir="rtl">
 
 <div align="center">
-<a href="https://github.com/3lf/llm-for-humans/releases/latest"><img src="images/book-preview.png" alt="پیش‌نمایش نسخه PDF کتاب LLM به زبان آدمیزاد"></a>
+<a href="https://github.com/3lf/llm-for-humans/releases/latest"><img src="images/book-preview.png" alt="کاور و صفحه‌های واقعی کتاب LLM به زبان آدمیزاد" width="100%"></a>
 
-<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf"><img src="images/download-latest-book.svg" alt="دانلود مستقیم تازه‌ترین نسخه PDF کتاب LLM به زبان آدمیزاد" width="680"></a>
+<p><strong>کتاب رو چطور می‌خوای بخونی؟ 📥</strong></p>
 
-<p><sub>با یک کلیک، تازه‌ترین نسخه عادی کتاب رو مستقیم دانلود کن.</sub></p>
-
-<p><strong>نسخه مناسب خودت رو انتخاب کن:</strong></p>
+<p>محتوای هر سه نسخه یکیه؛ فقط حجم فایل، کیفیت تصویرها و رنگ پس‌زمینه فرق می‌کنه.</p>
 
 <table width="100%">
 <tr>
 <td align="center" width="33%">
-<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf"><strong>دانلود مستقیم نسخه عادی</strong></a>
+<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf"><img src="images/download-compact-book.svg" alt="دانلود مستقیم نسخه کم‌حجم کتاب" width="300"></a>
 <br>
-<sub>کم‌حجم‌تر؛ مناسب مطالعه و اشتراک‌گذاری</sub>
-</td>
-<td align="center" width="34%">
-<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-print.pdf"><strong>دانلود مستقیم نسخه مناسب چاپ</strong></a>
-<br>
-<sub>پس‌زمینه سفید و تصاویر رنگی بدون افت؛ کم‌مصرف برای چاپ</sub>
+<sub>همون کتاب کامل، با حجم کمتر؛<br>برای خوندن روزمره و فرستادن برای بقیه.</sub>
 </td>
 <td align="center" width="33%">
-<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-high-quality.pdf"><strong>دانلود مستقیم نسخه باکیفیت</strong></a>
+<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-high-quality.pdf"><img src="images/download-high-quality-book.svg" alt="دانلود مستقیم نسخه باکیفیت کتاب" width="300"></a>
 <br>
-<sub>طراحی تمام‌رنگی و تصاویر بدون افت؛ مناسب نمایش و آرشیو</sub>
+<sub>تصویرها با کیفیت اصلی؛<br>برای نمایش روی صفحه‌های بزرگ و نگه‌داشتن نسخه باکیفیت.</sub>
+</td>
+<td align="center" width="34%">
+<a href="https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-print.pdf"><img src="images/download-print-book.svg" alt="دانلود مستقیم نسخه مناسب چاپ کتاب" width="300"></a>
+<br>
+<sub>صفحه‌های سفید و تصویرهای رنگی؛<br>برای چاپ راحت‌تر و مصرف کمتر جوهر.</sub>
 </td>
 </tr>
 </table>

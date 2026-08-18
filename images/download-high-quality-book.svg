@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="126" viewBox="0 0 420 126" role="img" aria-labelledby="title desc">
+  <title id="title">دانلود نسخه باکیفیت کتاب</title>
+  <desc id="desc">دکمه دانلود مستقیم نسخه باکیفیت کتاب LLM به زبان آدمیزاد</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071e36"/>
+      <stop offset="1" stop-color="#123f73"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="20%" cy="50%" r="65%">
+      <stop offset="0" stop-color="#d2b367" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#d2b367" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="2" y="2" width="416" height="122" rx="18" fill="url(#bg)" stroke="#d2b367" stroke-width="4"/>
+  <rect x="8" y="8" width="404" height="110" rx="13" fill="url(#glow)" stroke="#ffffff" stroke-opacity=".12"/>
+  <g transform="translate(62 63)" fill="none" stroke="#f6e3ae" stroke-linejoin="round" aria-hidden="true">
+    <path d="M0 -31L9 -9L31 0L9 9L0 31L-9 9L-31 0L-9 -9Z" stroke-width="3"/>
+    <path d="M0 -16L5 -5L16 0L5 5L0 16L-5 5L-16 0L-5 -5Z" fill="#d2b367" fill-opacity=".35" stroke-width="2"/>
+    <circle cx="0" cy="0" r="3" fill="#fff7df" stroke="none"/>
+  </g>
+  <g text-anchor="middle" direction="rtl" unicode-bidi="plaintext" font-family="Tahoma, Arial, sans-serif">
+    <text x="256" y="43" font-size="15" fill="#f2d999">دانلود مستقیم</text>
+    <text x="256" y="80" font-size="27" font-weight="700" fill="#ffffff">نسخه باکیفیت</text>
+  </g>
+</svg>
