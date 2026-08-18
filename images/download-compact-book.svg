@@ -10,9 +10,9 @@
   <rect x="2" y="2" width="416" height="122" rx="18" fill="url(#bg)" stroke="#d2b367" stroke-width="4"/>
   <path d="M18 22H402M18 104H402" stroke="#ffffff" stroke-opacity=".13"/>
   <g transform="translate(62 63)" fill="none" stroke="#f7efdc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <circle cx="0" cy="0" r="30" stroke="#d2b367" stroke-width="2.5"/>
-    <path d="M0 -18V8M-11 -1L0 10L11 -1M-15 19H15"/>
-    <path d="M-17 -16H17" stroke-opacity=".5"/>
+    <circle cx="0" cy="0" r="29" stroke="#d2b367" stroke-width="2.75"/>
+    <path d="M0 -15V7M-10 -2L0 8L10 -2"/>
+    <path d="M-13 18H13"/>
   </g>
   <g text-anchor="middle" direction="rtl" unicode-bidi="plaintext" font-family="Tahoma, Arial, sans-serif">
     <text x="256" y="43" font-size="15" fill="#f2d999">دانلود مستقیم</text>
