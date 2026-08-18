@@ -31,13 +31,12 @@ brew install poppler qpdf
 برای اینکه نتیجه سیستم تو با GitHub Actions یکی باشه، دقیقاً همون نسخه‌ای از README Press رو بگیر که workflow پروژه استفاده می‌کنه:
 
 ```bash
-git clone https://github.com/3lf/readme-press.git .readme-press
-git -C .readme-press checkout 4d27237e258c5b3d385d0a075096074dd710c9f3
+git clone --branch v0.2.0 --depth 1 https://github.com/3lf/readme-press.git .readme-press
 npm ci --prefix .readme-press
 npm ci --prefix book
 ```
 
-فرمان آخر کتابخانه تبدیل دقیق تاریخ جلالی رو نصب می‌کنه. هر وقت نسخه README Press در workflow عوض شد، هش commit همین فرمان هم باید با اون هماهنگ بشه.
+فرمان آخر کتابخانه تبدیل دقیق تاریخ جلالی رو نصب می‌کنه. هر وقت نسخه README Press در workflow عوض شد، تگ همین فرمان هم باید با اون هماهنگ بشه.
 
 ## خروجی دلخواهت رو بساز 🏗️
 

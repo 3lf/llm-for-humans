@@ -86,7 +86,7 @@ jobs:
           echo "Release date: $release_date (Asia/Tehran)"
 
       - name: Build and fully verify all three PDF editions
-        uses: 3lf/readme-press@4d27237e258c5b3d385d0a075096074dd710c9f3
+        uses: 3lf/readme-press@v0.2.0
         env:
           README_PRESS_RELEASE_VERSION: ${{ steps.release.outputs.version }}
           README_PRESS_RELEASE_DATE: ${{ steps.release-date.outputs.date }}

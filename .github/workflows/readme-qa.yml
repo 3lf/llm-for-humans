@@ -89,7 +89,7 @@ jobs:
         run: npm ci --prefix book
 
       - name: Build and verify the complete book
-        uses: 3lf/readme-press@4d27237e258c5b3d385d0a075096074dd710c9f3
+        uses: 3lf/readme-press@v0.2.0
         env:
           README_PRESS_RELEASE_VERSION: v0.0.0-ci
           README_PRESS_RELEASE_DATE: '2026-08-02'
