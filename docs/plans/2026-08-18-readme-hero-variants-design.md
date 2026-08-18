@@ -27,3 +27,9 @@ A natural overhead reading scene on a warm, understated desk. The book is open o
 ## Selection and finalization
 
 The three previews are compared at 1400×600 and at a 375-pixel GitHub viewport. After the user selects a direction, only that direction is finalized, the exact source cover/content is restored where needed, and `images/book-preview.png` is replaced in a separate commit.
+
+## Selected direction and refinement
+
+The reading-desk direction is selected. The final scene keeps the existing desk, window light, pen, reading glasses, and cropped notebook, but replaces the malformed partly open book with one fully closed matte book.
+
+The book must behave as a single physical object: a flat rectangular cover with consistent perspective, a straight spine, a uniform page block visible only along the right and lower edges, and a grounded contact shadow that follows the window light. The exact source cover is the artwork reference. There must be no loose white leaf, bent cover plane, floating edge, duplicated board, or invented spine geometry.
