@@ -37,3 +37,7 @@ Render the changed header through GitHub's Markdown API and inspect desktop and 
 ## 6. Publish the PR update
 
 Stage only the README, the four approved image assets, and the two plan documents if needed. Verify the staged file list, commit with an English message, push the existing `feat/print-book-download` branch, and update PR #17 so it describes the released README Press v0.2.0 dependency and redesigned download header.
+
+## 7. Correct the compact download icon
+
+Replace the compact button's icon paths with a centered standard download arrow and lower tray. Remove the intersecting decorative upper bar, validate the SVG as XML, rasterize it at its intrinsic size for visual inspection, and recheck the complete three-button row at desktop and narrow widths.

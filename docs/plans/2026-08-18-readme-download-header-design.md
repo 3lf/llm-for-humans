@@ -54,6 +54,10 @@ GitHub renders the three image links inside equal table cells on desktop. On nar
 
 Every image has descriptive Persian alternative text. Button labels remain legible without relying on color, and the print control uses both a printer icon and explicit wording.
 
+## Compact download icon correction
+
+The compact-edition button uses a conventional download symbol inside its gold circle. The icon contains only a centered vertical arrow and a separate lower tray. The previous decorative upper bar is removed because it intersects the arrow stem and reads as a rendering defect. Arrow and tray spacing are optically balanced inside the circle, with rounded strokes matching the other two button icons.
+
 ## Verification
 
 - render the README with GitHub's Markdown API;
