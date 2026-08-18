@@ -58,6 +58,10 @@ Every image has descriptive Persian alternative text. Button labels remain legib
 
 The compact-edition button uses a conventional download symbol inside its gold circle. The icon contains only a centered vertical arrow and a separate lower tray. The previous decorative upper bar is removed because it intersects the arrow stem and reads as a rendering defect. Arrow and tray spacing are optically balanced inside the circle, with rounded strokes matching the other two button icons.
 
+## Side-page alignment correction
+
+The two real interior pages remain at their current size, height, position, and distance from the central cover, but both use zero rotation. Their borders and drop shadows are also axis-aligned. The cover, background, ornament, page content, and overall hierarchy remain unchanged. This removes the distracting inward tilt without introducing generated or resampled page text.
+
 ## Verification
 
 - render the README with GitHub's Markdown API;

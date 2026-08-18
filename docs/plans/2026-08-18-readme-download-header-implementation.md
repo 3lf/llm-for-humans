@@ -41,3 +41,7 @@ Stage only the README, the four approved image assets, and the two plan document
 ## 7. Correct the compact download icon
 
 Replace the compact button's icon paths with a centered standard download arrow and lower tray. Remove the intersecting decorative upper bar, validate the SVG as XML, rasterize it at its intrinsic size for visual inspection, and recheck the complete three-button row at desktop and narrow widths.
+
+## 8. Straighten the side pages
+
+Regenerate the hero from the original cover and rendered page sources. Set both side-page rotations and their shadow rotations to zero while preserving every other source, dimension, position, and visual treatment. Confirm the output remains 1400×600 and inspect the rendered GitHub README at desktop and narrow widths.
