@@ -6,7 +6,7 @@ Resolve issue #15 by making the existing Top-k guidance explicit without present
 
 ## Design
 
-Keep the current low and high examples. Add one short subsection explaining that `top_k=1` is the smallest meaningful sampling set and produces greedy selection, while common values such as `40` or `50` are examples rather than a shared maximum. Tell readers to check the selected model or inference runtime for its default, valid range, and support.
+Keep the current low and high examples. Add one short paragraph explaining that `top_k=1` is the smallest meaningful sampling set and produces greedy selection, while common values such as `40` or `50` are examples rather than a shared maximum. Tell readers to check the selected model or inference runtime for its default, valid range, and support. Do not introduce another heading or anchor.
 
 Do not add a provider comparison table. Those limits change independently and would make a plain-language teaching section need frequent maintenance.
 
