@@ -121,16 +121,35 @@ node .readme-press/bin/readme-press.mjs pipeline \
 
 به این ترتیب هر تغییر کوچیک README بی‌دلیل نسخه تازه‌ای از کتاب منتشر نمی‌کنه و تصمیم نهایی همیشه دست خودته.
 
+### بعد از انتشار عمومی دوباره بررسی کن 🔎
+
+بعد از انتشار یک نسخه پایدار، فقط سبز بودن گردش‌کار کافی نیست. چهار فایل مسیر `latest` رو دانلود کن و هش هر سه PDF رو با فایل منتشرشده بسنج:
+
+```bash
+verification_dir="$(mktemp -d)"
+curl --fail --location --output "$verification_dir/llm-for-humans-book.pdf" \
+  https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book.pdf
+curl --fail --location --output "$verification_dir/llm-for-humans-book-print.pdf" \
+  https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-print.pdf
+curl --fail --location --output "$verification_dir/llm-for-humans-book-high-quality.pdf" \
+  https://github.com/3lf/llm-for-humans/releases/latest/download/llm-for-humans-book-high-quality.pdf
+curl --fail --location --output "$verification_dir/SHA256SUMS.txt" \
+  https://github.com/3lf/llm-for-humans/releases/latest/download/SHA256SUMS.txt
+(cd "$verification_dir" && sha256sum --check SHA256SUMS.txt)
+```
+
+اگه Draft خراب بود، همون Draft رو پاک کن، ایراد رو برطرف کن و از نو بسازش. اگه نسخه عمومی ایراد داشت، راه عادی اینه که اصلاح رو با یک patch release تازه منتشر کنی. پاک‌کردن نسخه عمومی و tag اون و استفاده دوباره از همون شماره، یک مسیر استثنایی و تخریبیه: فقط با تأیید صریح مالک انجامش بده و قبلش کپی همه assetهای نسخه اصلی رو در یک جای امن نگه دار.
+
 ## حواست به فایل‌های محلی باشه 🧹
 
 پوشه `.readme-press/`، پوشه `book/node_modules/`، خروجی‌های `book/dist/`، فایل‌های PDF و کش‌های ساخت عمداً نباید وارد commit بشن. این مسیرها برای حفظ تاریخ قدیمی `.gitignore` به اون فایل اضافه نمی‌شن؛ پس قبل از هر commit حتماً وضعیت Git رو ببین و فقط فایل‌های لازم رو با اسم دقیق stage کن.
 
 ```bash
 git status --short
-git add README.md images/download-latest-book.svg book/README.md book/package.json book/package-lock.json book/qa.mjs book/readme-press.config.mjs book/release-metadata.mjs book/release-metadata.test.mjs .github/workflows/readme-qa.yml .github/workflows/release-book.yml
+git add -- book/README.md
 git diff --cached --name-status
 ```
 
-از `git add .` و `git add -A` استفاده نکن. اگه خروجی یا فایل آزمایشی دیدی، اون رو بیرون از ریپو آرشیو کن یا بعد از اطمینان از بی‌استفاده‌بودنش پاک کن.
+خط `git add` فقط یک نمونه‌ست. اسمش رو با مسیر دقیق فایل‌هایی عوض کن که واقعاً در همون تغییر دست زده‌ای و برای هر مسیر لازم تکرارش کن. از `git add .` و `git add -A` استفاده نکن. اگه خروجی یا فایل آزمایشی دیدی، اون رو بیرون از ریپو آرشیو کن یا بعد از اطمینان از بی‌استفاده‌بودنش پاک کن.
 
 </div>
