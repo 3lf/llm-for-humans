@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "inventory:candidate": "node update-content-inventory.mjs",
     "test": "node --test"
   },
   "dependencies": {
