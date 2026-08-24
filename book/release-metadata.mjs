@@ -1,5 +1,7 @@
 import { toJalaali } from 'jalaali-js';
 
+import { parseReleaseVersion } from './release-version.mjs';
+
 const PERSIAN_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
 const PERSIAN_MONTHS = [
   'فروردین',
@@ -15,7 +17,6 @@ const PERSIAN_MONTHS = [
   'بهمن',
   'اسفند',
 ];
-const RELEASE_VERSION = /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 const RELEASE_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 export const DEFAULT_BOOK_METADATA = Object.freeze({
@@ -34,10 +35,26 @@ function toPersianDigits(value) {
 }
 
 function argumentValue(argv, name) {
-  const inline = argv.find((argument) => argument.startsWith(`${name}=`));
-  if (inline) return inline.slice(name.length + 1);
-  const index = argv.indexOf(name);
-  return index >= 0 ? argv[index + 1] : undefined;
+  let value;
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+    if (argument.startsWith(`${name}=`)) {
+      const inlineValue = argument.slice(name.length + 1);
+      if (!inlineValue.trim()) throw new Error(`Empty value for ${name}.`);
+      value = inlineValue;
+      continue;
+    }
+    if (argument !== name) continue;
+
+    const followingValue = argv[index + 1];
+    if (!followingValue || followingValue.startsWith('-')) {
+      throw new Error(`Missing value for ${name}; another flag cannot be used as its value.`);
+    }
+    if (!followingValue.trim()) throw new Error(`Empty value for ${name}.`);
+    value = followingValue;
+    index += 1;
+  }
+  return value;
 }
 
 function parseGregorianDate(value) {
@@ -59,8 +76,11 @@ function parseGregorianDate(value) {
 }
 
 export function formatReleaseMetadata({ releaseVersion, releaseDate }) {
-  if (!RELEASE_VERSION.test(releaseVersion ?? '')) {
-    throw new Error(`Invalid README_PRESS_RELEASE_VERSION: ${releaseVersion ?? '(missing)'}. Use vMAJOR.MINOR.PATCH.`);
+  let parsedVersion;
+  try {
+    parsedVersion = parseReleaseVersion(releaseVersion);
+  } catch (error) {
+    throw new Error(`Invalid README_PRESS_RELEASE_VERSION: ${error.message}`);
   }
   const { year, month, day, date } = parseGregorianDate(releaseDate);
   const { jy, jm, jd } = toJalaali(year, month, day);
@@ -73,7 +93,7 @@ export function formatReleaseMetadata({ releaseVersion, releaseDate }) {
   }).format(date);
 
   return {
-    edition: `ویرایش اول · ${persianDate} · ${gregorianDate}`,
+    edition: `${parsedVersion.editionLabel} · ${persianDate} · ${gregorianDate}`,
     localDate: persianDate,
     latinDate: `${releaseVersion} · ${gregorianDate}`,
     persianDate,
