@@ -17,6 +17,8 @@ on:
       - images/**
       - .github/workflows/release-book.yml
       - .github/workflows/readme-qa.yml
+  schedule:
+    - cron: '17 6 1 * *'
   workflow_dispatch:
 
 permissions:
@@ -51,6 +53,9 @@ jobs:
 
       - name: Reject prose whose first strong character is Latin
         run: node book/source-qa.mjs README.md
+
+      - name: Check volatile-data freshness
+        run: node book/volatile-data.mjs README.md
 
   workflow-syntax:
     name: Check workflow syntax
