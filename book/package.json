@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test release-metadata.test.mjs"
+    "test": "node --test"
   },
   "dependencies": {
     "jalaali-js": "2.0.0"
