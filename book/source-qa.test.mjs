@@ -24,8 +24,23 @@ const rtlCases = [
     expected: [6],
   },
   {
+    name: 'accepts a longer matching fence closer',
+    source: '```\nEnglish\n`````  \nEnglish prose',
+    expected: [4],
+  },
+  {
+    name: 'rejects a backtick fence opener whose info string contains a backtick',
+    source: '```bad`info\nEnglish continuation',
+    expected: [1],
+  },
+  {
     name: 'supports tilde fences',
     source: '~~~text\nEnglish\n~~~\nمتن فارسی',
+    expected: [],
+  },
+  {
+    name: 'allows backticks in a tilde fence info string',
+    source: '~~~ bad`info\nEnglish\n~~~\nمتن فارسی',
     expected: [],
   },
   {
@@ -37,6 +52,16 @@ const rtlCases = [
     name: 'supports CRLF input',
     source: '```\r\nEnglish\r\n```\r\nEnglish prose',
     expected: [4],
+  },
+  {
+    name: 'treats tab-indented fence markers as indented code and checks following prose',
+    source: '\t```js\n\tEnglish\n\t```\nEnglish prose',
+    expected: [4],
+  },
+  {
+    name: 'treats four-space-indented blocks as code and checks following prose',
+    source: '    English code\n    more code\nEnglish prose',
+    expected: [3],
   },
   {
     name: 'checks bullets and ASCII-numbered lists',
@@ -141,6 +166,18 @@ test('ignores headings and links inside fences', () => {
   assert.deepEqual(result.mismatches, []);
 });
 
+test('ignores headings and links inside indented code blocks', () => {
+  const result = validateInternalAnchors([
+    '    # Hidden',
+    '    [bad](#missing)',
+    '# Visible',
+    '[good](#visible)',
+  ].join('\n'));
+  assert.equal(result.headings.length, 1);
+  assert.equal(result.links.length, 1);
+  assert.deepEqual(result.mismatches, []);
+});
+
 test('reports every mismatch with its source line, fragment, and nearest heading', () => {
   const result = validateInternalAnchors([
     '# بخش اول',
@@ -183,8 +220,11 @@ test('a deliberately altered current README fragment fails validation', () => {
   const source = readFileSync(join(import.meta.dirname, '..', 'README.md'), 'utf8');
   const altered = source.replace('](#مقدمه-)', '](#deliberately-missing)');
   assert.notEqual(altered, source);
+  const alteredLine = altered.split(/\r?\n/u)
+    .findIndex((line) => line.includes('](#deliberately-missing)')) + 1;
+  assert.ok(alteredLine > 0);
   const result = validateInternalAnchors(altered);
   assert.deepEqual(result.mismatches, [
-    { line: 82, fragment: '#deliberately-missing', nearestHeading: 'فهرست مطالب ✨' },
+    { line: alteredLine, fragment: '#deliberately-missing', nearestHeading: 'فهرست مطالب ✨' },
   ]);
 });

@@ -50,14 +50,33 @@ function isFenceCloser(line, fence) {
   );
 }
 
+function isIndentedCodeLine(line) {
+  const { body } = splitBlockQuotePrefix(line);
+  let columns = 0;
+  for (const character of body) {
+    if (character === ' ') {
+      columns += 1;
+    } else if (character === '\t') {
+      columns += 4 - (columns % 4);
+    } else {
+      break;
+    }
+    if (columns >= 4) return true;
+  }
+  return false;
+}
+
 function sourceLines(source) {
   const result = [];
   let fence = null;
+  let indentedCode = false;
+  let previousLineWasBlank = true;
 
   for (const [index, line] of source.split(/\r?\n/u).entries()) {
     if (fence) {
       if (isFenceCloser(line, fence)) {
         fence = null;
+        previousLineWasBlank = true;
         result.push({ closingFence: true, inFence: true, line, lineNumber: index + 1 });
       } else {
         result.push({ closingFence: false, inFence: true, line, lineNumber: index + 1 });
@@ -65,14 +84,33 @@ function sourceLines(source) {
       continue;
     }
 
+    let startsAfterCode = false;
+    if (indentedCode) {
+      if (!line.trim() || isIndentedCodeLine(line)) {
+        result.push({ closingFence: false, inFence: true, line, lineNumber: index + 1 });
+        continue;
+      }
+      indentedCode = false;
+      startsAfterCode = true;
+    }
+
     const opener = parseFenceOpener(line);
     if (opener) {
       fence = opener;
+      previousLineWasBlank = false;
       result.push({ closingFence: false, inFence: true, line, lineNumber: index + 1 });
       continue;
     }
 
-    result.push({ closingFence: false, inFence: false, line, lineNumber: index + 1 });
+    if (previousLineWasBlank && line.trim() && isIndentedCodeLine(line)) {
+      indentedCode = true;
+      previousLineWasBlank = false;
+      result.push({ closingFence: false, inFence: true, line, lineNumber: index + 1 });
+      continue;
+    }
+
+    result.push({ closingFence: false, inFence: false, line, lineNumber: index + 1, startsAfterCode });
+    previousLineWasBlank = !line.trim();
   }
 
   return result;
@@ -87,6 +125,8 @@ export function findUnsafeGitHubBlockStarts(source) {
       if (entry.closingFence) previousWasBlank = true;
       continue;
     }
+
+    if (entry.startsAfterCode) previousWasBlank = true;
 
     const trimmed = entry.line.trim();
     if (!trimmed) {
