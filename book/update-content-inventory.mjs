@@ -1,9 +1,12 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+import { countHtmlCallouts } from './qa-helpers.mjs';
 
 export const REQUIRED_EDITIONS = ['normal', 'print', 'high'];
 const CALLOUT_KIND_ORDER = ['note', 'tip', 'warn', 'date', 'new', 'star'];
+const bookDirectory = dirname(fileURLToPath(import.meta.url));
 
 function requireArray(value, label) {
   if (!Array.isArray(value) || value.length === 0) {
@@ -12,11 +15,9 @@ function requireArray(value, label) {
   return value;
 }
 
-function countCallouts(html) {
-  const counts = {};
-  for (const match of html.matchAll(/\bcallout-([a-z]+)\b/gu)) {
-    counts[match[1]] = (counts[match[1]] ?? 0) + 1;
-  }
+function orderedCalloutInventory(html) {
+  const callouts = countHtmlCallouts(html);
+  const counts = callouts.byKind;
   const knownKinds = CALLOUT_KIND_ORDER.filter((kind) => counts[kind] !== undefined);
   const extraKinds = Object.keys(counts)
     .filter((kind) => !CALLOUT_KIND_ORDER.includes(kind))
@@ -25,7 +26,7 @@ function countCallouts(html) {
     [...knownKinds, ...extraKinds].map((kind) => [kind, counts[kind]]),
   );
   return {
-    total: (html.match(/class="callout\s/gu) ?? []).length,
+    total: callouts.total,
     byKind,
   };
 }
@@ -75,13 +76,19 @@ export function buildContentInventory(manifest, html) {
     tocEntries,
     pages,
     figures: optimizedFigures.length,
-    callouts: countCallouts(html),
+    callouts: orderedCalloutInventory(html),
+  };
+}
+
+export function resolveInventoryPaths(argv, baseDirectory = bookDirectory) {
+  return {
+    manifestPath: resolve(argv[0] ?? resolve(baseDirectory, 'dist/manifest.json')),
+    candidatePath: resolve(argv[1] ?? resolve(baseDirectory, 'content-inventory.candidate.json')),
   };
 }
 
 function runCli() {
-  const manifestPath = resolve(process.argv[2] ?? 'book/dist/manifest.json');
-  const candidatePath = resolve(process.argv[3] ?? 'book/content-inventory.candidate.json');
+  const { manifestPath, candidatePath } = resolveInventoryPaths(process.argv.slice(2));
   if (!basename(candidatePath).endsWith('.candidate.json')) {
     throw new Error('Inventory updater writes only a reviewed *.candidate.json file.');
   }

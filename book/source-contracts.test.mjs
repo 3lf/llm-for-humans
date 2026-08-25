@@ -4,7 +4,11 @@ import { join } from 'node:path';
 import test from 'node:test';
 
 import config from './readme-press.config.mjs';
-import { configuredSourceSelectors, extractModelContextTokens } from './source-contracts.mjs';
+import {
+  additionalMixedDirectionTokens,
+  configuredSourceSelectors,
+  extractModelContextTokens,
+} from './source-contracts.mjs';
 
 const source = readFileSync(join(import.meta.dirname, '..', 'README.md'), 'utf8');
 
@@ -14,6 +18,10 @@ function occurrences(haystack, needle) {
 
 test('derives mixed-direction context tokens from the README model table', () => {
   assert.deepEqual(extractModelContextTokens(source), ['1M', '400K', '200K', '256K', '262K', '10M']);
+  assert.deepEqual(additionalMixedDirectionTokens, ['Persian-Phi']);
+  for (const token of additionalMixedDirectionTokens) {
+    assert.equal(occurrences(source, token), 1, token);
+  }
 });
 
 test('every configured source selector has a label and occurs exactly once', () => {

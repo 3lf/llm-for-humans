@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 
-import { buildContentInventory } from './update-content-inventory.mjs';
+import { buildContentInventory, resolveInventoryPaths } from './update-content-inventory.mjs';
 
 function completeManifest() {
   return {
@@ -59,6 +59,13 @@ test('refuses incomplete manifests', () => {
     () => buildContentInventory(singleEdition, '<aside class="callout callout-note"></aside>'),
     /requestedQuality must be all/u,
   );
+});
+
+test('resolves default inventory paths from the book module, not the caller directory', () => {
+  assert.deepEqual(resolveInventoryPaths([], '/repo/book'), {
+    manifestPath: '/repo/book/dist/manifest.json',
+    candidatePath: '/repo/book/content-inventory.candidate.json',
+  });
 });
 
 test('CLI writes only an inventory candidate after validation', () => {

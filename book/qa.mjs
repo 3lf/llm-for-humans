@@ -1,7 +1,12 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { countHtmlCallouts, sourceMatchDetail } from './qa-helpers.mjs';
 import { findUnsafeGitHubBlockStarts } from './source-qa.mjs';
-import { configuredSourceSelectors, extractModelContextTokens } from './source-contracts.mjs';
+import {
+  additionalMixedDirectionTokens,
+  configuredSourceSelectors,
+  extractModelContextTokens,
+} from './source-contracts.mjs';
 import { approvedTranslationPhrases, rejectedTranslationPatterns } from './translation-contracts.mjs';
 
 const contentInventory = JSON.parse(
@@ -103,7 +108,7 @@ export default async function runProjectQa({ config, manifest, check }) {
   check(sourceFigures.length === contentInventory.figures, 'source contains the exact book figure inventory', String(sourceFigures.length));
   check(
     expectedFigures.every((prefix, index) => sourceFigures[index]?.startsWith(prefix)),
-    'book figures form a complete 01 through 50 sequence',
+    `book figures form a complete ${expectedFigures[0].slice(4, 6)} through ${expectedFigures.at(-1).slice(4, 6)} sequence`,
   );
   const referencedFigures = [...source.matchAll(/\(images\/(vis-\d{2}-[^)]+\.png)\)/g)]
     .map((match) => match[1]);
@@ -132,7 +137,9 @@ export default async function runProjectQa({ config, manifest, check }) {
     check(html.includes(`>(${phrase})</bdi>`), `Latin parentheses are isolated: ${phrase}`);
   }
   check(html.includes('>Microsoft Agent Framework</bdi>'), 'linked Latin product name is isolated');
-  for (const token of [...extractModelContextTokens(source), 'Persian-Phi']) {
+  // These semantic rendering invariants intentionally remain inline; unlike
+  // content-inventory.json counts, they describe behavior rather than snapshots.
+  for (const token of [...extractModelContextTokens(source), ...additionalMixedDirectionTokens]) {
     check(html.includes(`>${token}</bdi>`), `complete mixed token is isolated: ${token}`);
   }
   check(!/\d+<bdi[^>]*>[MK]<\/bdi>/.test(html), 'no context value has a suffix-only isolate');
@@ -181,10 +188,10 @@ export default async function runProjectQa({ config, manifest, check }) {
     'tall figures follow the ratio rule',
     `${figureSizes.length} figures`,
   );
-  const calloutCount = (html.match(/class="callout\s/g) ?? []).length;
-  check(calloutCount === contentInventory.callouts.total, 'all source callouts keep their book styling', String(calloutCount));
+  const callouts = countHtmlCallouts(html);
+  check(callouts.total === contentInventory.callouts.total, 'all source callouts keep their book styling', String(callouts.total));
   for (const [kind, expected] of Object.entries(contentInventory.callouts.byKind)) {
-    const actual = (html.match(new RegExp(`callout-${kind}`, 'g')) ?? []).length;
+    const actual = callouts.byKind[kind] ?? 0;
     check(actual === expected, `${kind} callout inventory is stable`, `${actual}/${expected}`);
   }
   for (const { className, label } of config.contentRules.calloutClassRules) {
@@ -244,11 +251,13 @@ export default async function runProjectQa({ config, manifest, check }) {
   check(html.includes('class="chapter chapter-cheat-sheet"'), 'cheat sheet receives its scoped layout');
 
   for (const { id, phrase } of approvedTranslationPhrases) {
-    check(source.includes(phrase), `${id} approved translation is present`);
+    const detail = sourceMatchDetail(source, phrase);
+    check(Boolean(detail), `${id} approved translation is present`, detail ?? `expected phrase: ${phrase}`);
   }
 
   for (const { label, pattern } of rejectedTranslationPatterns) {
-    check(!pattern.test(source), `rejected translation is absent: ${label}`);
+    const detail = sourceMatchDetail(source, pattern);
+    check(!detail, `rejected translation is absent: ${label}`, detail ?? undefined);
   }
   for (const stale of [
     'مدل اول جمله رو به توکن‌ها',
