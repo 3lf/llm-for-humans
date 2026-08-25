@@ -5,6 +5,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import {
+  extractContextWindowCells,
   fullCalendarMonthsBetween,
   readerVisibleSnapshotLabel,
   validateVolatileData,
@@ -13,7 +14,10 @@ import {
 const bookDirectory = path.dirname(fileURLToPath(import.meta.url));
 const readme = fs.readFileSync(path.join(bookDirectory, '..', 'README.md'), 'utf8');
 const juneSnapshot = '<!-- volatile-data-reviewed: 2026-06 -->\n'
-  + 'خرداد ۱۴۰۵ (ژوئن ۲۰۲۶)\n'.repeat(3);
+  + 'خرداد ۱۴۰۵ (ژوئن ۲۰۲۶)\n'.repeat(3)
+  + '| مدل | پنجره کانتکست | تقریباً چند صفحه کتاب؟ |\n'
+  + '| :--- | :--- | :--- |\n'
+  + '| مدل نمونه | 262K توکن | حدود ۴۰۰ صفحه |\n';
 
 test('the README marker agrees with all three reader-visible snapshot dates', () => {
   assert.deepEqual(validateVolatileData(readme, new Date('2026-08-24T00:00:00Z')), {
@@ -49,6 +53,52 @@ test('a mismatched reader-visible date is rejected', () => {
     () => validateVolatileData(juneSnapshot.replace('خرداد', 'تیر'), new Date('2026-08-24T00:00:00Z')),
     /all 3 reader-visible snapshot dates/,
   );
+});
+
+test('a missing marker is rejected', () => {
+  assert.throws(
+    () => validateVolatileData(juneSnapshot.replace('<!-- volatile-data-reviewed: 2026-06 -->\n', ''), new Date('2026-08-24T00:00:00Z')),
+    /found 0/,
+  );
+});
+
+test('duplicate markers are rejected', () => {
+  assert.throws(
+    () => validateVolatileData(`<!-- volatile-data-reviewed: 2026-06 -->\n${juneSnapshot}`, new Date('2026-08-24T00:00:00Z')),
+    /found 2/,
+  );
+});
+
+test('an invalid marker month is rejected', () => {
+  assert.throws(
+    () => validateVolatileData(juneSnapshot.replace('2026-06', '2026-13'), new Date('2026-08-24T00:00:00Z')),
+    /Invalid volatile-data month/,
+  );
+});
+
+test('a future marker month is rejected', () => {
+  assert.throws(
+    () => validateVolatileData(juneSnapshot.replace('2026-06', '2026-09'), new Date('2026-08-24T00:00:00Z')),
+    /cannot be in the future/,
+  );
+});
+
+test('context-window qualifiers must live in the table note', () => {
+  assert.throws(
+    () => validateVolatileData(juneSnapshot.replace('262K توکن', 'حدود 262K توکن'), new Date('2026-08-24T00:00:00Z')),
+    /Move context-window qualifiers to the table note/,
+  );
+});
+
+test('context-window cells are extracted from the snapshot table', () => {
+  assert.deepEqual(extractContextWindowCells(readme), [
+    '1M توکن',
+    '۱ میلیون توکن',
+    '1M توکن',
+    '10M توکن',
+    '۱ میلیون توکن',
+    '262K توکن',
+  ]);
 });
 
 test('reader-visible labels are derived from the marker month', () => {
