@@ -4,13 +4,8 @@ on:
   pull_request:
     paths:
       - README.md
-      - book/package-lock.json
-      - book/package.json
-      - book/qa.mjs
-      - book/readme-press.config.mjs
-      - book/release-metadata.mjs
-      - book/release-metadata.test.mjs
-      - book/source-qa.mjs
+      - book/**
+      - images/**
       - .github/workflows/release-book.yml
       - .github/workflows/readme-qa.yml
   push:
@@ -18,19 +13,18 @@ on:
       - main
     paths:
       - README.md
-      - book/package-lock.json
-      - book/package.json
-      - book/qa.mjs
-      - book/readme-press.config.mjs
-      - book/release-metadata.mjs
-      - book/release-metadata.test.mjs
-      - book/source-qa.mjs
+      - book/**
+      - images/**
       - .github/workflows/release-book.yml
       - .github/workflows/readme-qa.yml
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: readme-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   source-and-metadata:
@@ -39,10 +33,10 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Check out the source
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 22
           cache: npm
@@ -64,7 +58,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Check out the source
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Validate GitHub Actions workflows
         run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 .github/workflows/*.yml
@@ -76,10 +70,10 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Check out the source
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 22
           cache: npm
@@ -88,8 +82,24 @@ jobs:
       - name: Install book metadata dependency
         run: npm ci --prefix book
 
+      - name: Install PDF QA tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils qpdf
+
+      - name: Verify PDF QA toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          for tool in qpdf pdfinfo pdffonts pdftotext pdfimages pdftoppm; do
+            if ! command -v "$tool" >/dev/null; then
+              echo "Required PDF QA tool is unavailable: $tool" >&2
+              exit 1
+            fi
+          done
+
       - name: Build and verify the complete book
-        uses: 3lf/readme-press@v0.2.0
+        uses: 3lf/readme-press@fa3d3ba5bfb5e2de41a0c3b4fbef290f2928fded # v0.2.0
         env:
           README_PRESS_RELEASE_VERSION: v0.0.0-ci
           README_PRESS_RELEASE_DATE: '2026-08-02'
@@ -99,3 +109,4 @@ jobs:
           release-version: v0.0.0-ci
           source-commit: ${{ github.sha }}
           render-all: true
+          install-pdf-tools: 'false'
