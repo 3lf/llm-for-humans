@@ -75,6 +75,9 @@ jobs:
           npm ci --prefix book
           npm test --prefix book
 
+      - name: Check volatile-data freshness at release time
+        run: node book/volatile-data.mjs README.md
+
       - name: Install PDF QA tools
         run: |
           sudo apt-get update
