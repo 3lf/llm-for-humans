@@ -65,23 +65,44 @@ export default {
   images: {
     normalJpegQuality: 94,
     classRules: [
-      { endsWith: 'vis-15-agent-loop.png', className: 'diagram--agent-loop' },
-      { endsWith: 'vis-30-model-selection-path.png', className: 'diagram--model-selection-path' },
+      {
+        label: 'Agent loop diagram pagination',
+        endsWith: 'vis-15-agent-loop.png',
+        className: 'diagram--agent-loop',
+      },
+      {
+        label: 'Model selection diagram pagination',
+        endsWith: 'vis-30-model-selection-path.png',
+        className: 'diagram--model-selection-path',
+      },
     ],
   },
   contentRules: {
     calloutClassRules: [
-      { contains: 'ایجنت (Agent) نتیجه ابزار رو می‌بینه', className: 'callout--agent-loop-caption' },
-      { contains: 'بهترین مدل، مدلیه که روی سناریوهای واقعی تو', className: 'callout--model-selection-closing' },
+      {
+        label: 'Agent loop caption pagination',
+        contains: 'ایجنت (Agent) نتیجه ابزار رو می‌بینه و تا وقتی اطلاعات کافی نشده، چرخه فکر، عمل و مشاهده رو ادامه می‌ده.',
+        className: 'callout--agent-loop-caption',
+      },
+      {
+        label: 'Model selection closing pagination',
+        contains: 'بهترین مدل، مدلیه که روی سناریوهای واقعی تو بهترین تعادل کیفیت، سرعت، هزینه و قابلیت رو بده.',
+        className: 'callout--model-selection-closing',
+      },
     ],
     paragraphClassRules: [
       {
-        startsWith: 'با استفاده از این تکنیک‌ها، می‌تونی مثل یه حرفه‌ای',
+        label: 'Prompting chapter closing pagination',
+        startsWith: 'با استفاده از این تکنیک‌ها، می‌تونی از یه کاربر معمولی LLM به یه کاربر حرفه‌ای تبدیل بشی و جواب‌های خیلی دقیق‌تر، مفیدتر و خلاقانه‌تری از این مدل‌ها بگیری!',
         className: 'chapter-closing chapter-closing--prompting',
       },
     ],
     chapterClassRules: [
-      { titleStartsWith: 'چیت‌شیت سریع', className: 'chapter-cheat-sheet' },
+      {
+        label: 'Cheat sheet chapter layout',
+        titleStartsWith: 'چیت‌شیت سریع',
+        className: 'chapter-cheat-sheet',
+      },
     ],
     treeAriaLabel: 'ساختار تیم ایجنت‌ها',
   },

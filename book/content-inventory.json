@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "parts": 9,
+  "chapters": 30,
+  "headings": 355,
+  "subheadings": 290,
+  "tocEntries": 65,
+  "pages": {
+    "normal": 265,
+    "print": 265,
+    "high": 265
+  },
+  "figures": 50,
+  "callouts": {
+    "total": 123,
+    "byKind": {
+      "note": 70,
+      "tip": 35,
+      "warn": 15,
+      "date": 1,
+      "new": 1,
+      "star": 1
+    }
+  }
+}
