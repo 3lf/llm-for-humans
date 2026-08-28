@@ -93,10 +93,10 @@ test('context-window qualifiers must live in the table note', () => {
 test('context-window cells are extracted from the snapshot table', () => {
   assert.deepEqual(extractContextWindowCells(readme), [
     '1M توکن',
-    '۱ میلیون توکن',
+    '1M توکن',
     '1M توکن',
     '10M توکن',
-    '۱ میلیون توکن',
+    '1M توکن',
     '262K توکن',
   ]);
 });
