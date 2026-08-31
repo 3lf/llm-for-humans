@@ -29,6 +29,13 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: book/package-lock.json
+
       - name: Validate main and release version
         id: release
         env:
@@ -43,10 +50,7 @@ jobs:
           fi
 
           version="$REQUESTED_VERSION"
-          if [[ ! "$version" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
-            echo "Invalid release version: $version. Use vMAJOR.MINOR.PATCH." >&2
-            exit 1
-          fi
+          node book/release-version.mjs "$version" >> "$GITHUB_OUTPUT"
           git fetch --force --tags origin
           if git rev-parse --quiet --verify "refs/tags/$version" >/dev/null; then
             echo "Tag $version already exists." >&2
@@ -56,19 +60,6 @@ jobs:
             echo "Release $version already exists." >&2
             exit 1
           fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          if [[ "$version" == *-* ]]; then
-            echo "prerelease=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "prerelease=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: book/package-lock.json
 
       - name: Install and test book metadata
         run: |
