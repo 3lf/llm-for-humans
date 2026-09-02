@@ -37,6 +37,12 @@ export default {
   labels: {
     latestLink: 'نسخه جدید و ستاره‌دادن',
   },
+  security: {
+    rawHtml: 'trusted',
+    network: 'deny',
+    diagnostics: 'strict',
+    strictConfig: true,
+  },
   toc: {
     maxDepth: 2,
     chapterOnly: [

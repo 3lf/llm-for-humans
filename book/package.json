@@ -9,5 +9,8 @@
   },
   "dependencies": {
     "jalaali-js": "2.0.0"
+  },
+  "devDependencies": {
+    "readme-press": "0.3.0"
   }
 }

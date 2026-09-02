@@ -104,14 +104,12 @@ jobs:
           done
 
       - name: Build and verify the complete book
-        uses: 3lf/readme-press@fa3d3ba5bfb5e2de41a0c3b4fbef290f2928fded # v0.2.0
+        run: >-
+          npx --prefix book --no-install readme-press pipeline
+          --config book/readme-press.config.mjs
+          --release-version v1.0.0-ci
+          --commit "$GITHUB_SHA"
+          --render-all
         env:
           README_PRESS_RELEASE_VERSION: v1.0.0-ci
           README_PRESS_RELEASE_DATE: '2026-08-02'
-        with:
-          command: pipeline
-          config: book/readme-press.config.mjs
-          release-version: v1.0.0-ci
-          source-commit: ${{ github.sha }}
-          render-all: true
-          install-pdf-tools: 'false'
