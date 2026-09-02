@@ -28,15 +28,14 @@ brew install poppler qpdf
 
 ## موتور رو آماده کن 🛠️
 
-برای اینکه نتیجه سیستم تو با GitHub Actions یکی باشه، دقیقاً همون نسخه‌ای از README Press رو بگیر که workflow پروژه استفاده می‌کنه:
+برای اینکه نتیجه سیستم تو با GitHub Actions یکی باشه، همون نسخه‌ای از README Press رو نصب کن که داخل `book/package.json` ثبت شده:
 
 ```bash
-git clone --branch v0.2.0 --depth 1 https://github.com/3lf/readme-press.git .readme-press
-npm ci --prefix .readme-press
 npm ci --prefix book
+npx --prefix book --no-install readme-press version
 ```
 
-فرمان آخر کتابخانه تبدیل دقیق تاریخ جلالی رو نصب می‌کنه. هر وقت نسخه README Press در workflow عوض شد، تگ همین فرمان هم باید با اون هماهنگ بشه.
+این فرمان‌ها موتور ساخت و کتابخانه تبدیل دقیق تاریخ جلالی رو از روی lockfile نصب و بررسی می‌کنن. هر وقت نسخه README Press در `book/package.json` عوض شد، lockfile رو هم با `npm install --prefix book` به‌روزرسانی کن.
 
 ### نسخه ثبت‌شده قراردادهای محتوایی رو به‌روز کن 📋
 
@@ -53,7 +52,7 @@ npm run inventory:candidate --prefix book
 برای ساخت نسخه عادی و کم‌حجم‌تر این فرمان رو اجرا کن:
 
 ```bash
-node .readme-press/bin/readme-press.mjs build \
+npx --prefix book --no-install readme-press build \
   --config book/readme-press.config.mjs \
   --quality normal
 ```
@@ -61,7 +60,7 @@ node .readme-press/bin/readme-press.mjs build \
 برای ساخت نسخه مناسب چاپ با پس‌زمینه سفید و تصاویر رنگی بدون افت، این فرمان رو اجرا کن:
 
 ```bash
-node .readme-press/bin/readme-press.mjs build \
+npx --prefix book --no-install readme-press build \
   --config book/readme-press.config.mjs \
   --quality print
 ```
@@ -69,7 +68,7 @@ node .readme-press/bin/readme-press.mjs build \
 برای ساخت نسخه تمام‌رنگی و باکیفیت این فرمان رو اجرا کن:
 
 ```bash
-node .readme-press/bin/readme-press.mjs build \
+npx --prefix book --no-install readme-press build \
   --config book/readme-press.config.mjs \
   --quality high
 ```
@@ -77,7 +76,7 @@ node .readme-press/bin/readme-press.mjs build \
 برای ساخت هر سه نسخه با یک فرمان از حالت `all` استفاده کن:
 
 ```bash
-node .readme-press/bin/readme-press.mjs build \
+npx --prefix book --no-install readme-press build \
   --config book/readme-press.config.mjs \
   --quality all
 ```
@@ -93,7 +92,7 @@ node .readme-press/bin/readme-press.mjs build \
 ساخته‌شدن PDF به‌تنهایی کافی نیست. قبل از انتشار باید هر سه نسخه، همه صفحه‌ها و قواعد مخصوص کتاب بررسی بشن:
 
 ```bash
-node .readme-press/bin/readme-press.mjs qa \
+npx --prefix book --no-install readme-press qa \
   --config book/readme-press.config.mjs \
   --quality all \
   --render-all
@@ -128,7 +127,7 @@ release_version=v1.0.1
 release_date="$(TZ=Asia/Tehran date +%F)"
 README_PRESS_RELEASE_VERSION="$release_version" \
 README_PRESS_RELEASE_DATE="$release_date" \
-node .readme-press/bin/readme-press.mjs pipeline \
+npx --prefix book --no-install readme-press pipeline \
   --config book/readme-press.config.mjs \
   --release-version "$release_version" \
   --commit FULL_GIT_COMMIT \
@@ -174,7 +173,7 @@ curl --fail --location --output "$verification_dir/SHA256SUMS.txt" \
 
 ## حواست به فایل‌های محلی باشه 🧹
 
-پوشه `.readme-press/`، پوشه `book/node_modules/`، خروجی‌های `book/dist/`، فایل‌های PDF و کش‌های ساخت عمداً نباید وارد commit بشن. این مسیرها برای حفظ تاریخ قدیمی `.gitignore` به اون فایل اضافه نمی‌شن؛ پس قبل از هر commit حتماً وضعیت Git رو ببین و فقط فایل‌های لازم رو با اسم دقیق stage کن.
+پوشه `book/node_modules/`، خروجی‌های `book/dist/`، فایل‌های PDF و کش‌های ساخت عمداً نباید وارد commit بشن. این مسیرها برای حفظ تاریخ قدیمی `.gitignore` به اون فایل اضافه نمی‌شن؛ پس قبل از هر commit حتماً وضعیت Git رو ببین و فقط فایل‌های لازم رو با اسم دقیق stage کن.
 
 ```bash
 git status --short

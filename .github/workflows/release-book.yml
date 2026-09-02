@@ -95,17 +95,15 @@ jobs:
           echo "Release date: $release_date (Asia/Tehran)"
 
       - name: Build and fully verify all three PDF editions
-        uses: 3lf/readme-press@fa3d3ba5bfb5e2de41a0c3b4fbef290f2928fded # v0.2.0
+        run: >-
+          npx --prefix book --no-install readme-press pipeline
+          --config book/readme-press.config.mjs
+          --release-version "${{ steps.release.outputs.version }}"
+          --commit "$GITHUB_SHA"
+          --render-all
         env:
           README_PRESS_RELEASE_VERSION: ${{ steps.release.outputs.version }}
           README_PRESS_RELEASE_DATE: ${{ steps.release-date.outputs.date }}
-        with:
-          command: pipeline
-          config: book/readme-press.config.mjs
-          release-version: ${{ steps.release.outputs.version }}
-          source-commit: ${{ github.sha }}
-          render-all: true
-          install-pdf-tools: 'false'
 
       - name: Recheck release checksums
         working-directory: book/dist
