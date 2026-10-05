@@ -13,7 +13,11 @@ const GREGORIAN_MONTHS = [
   'ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن',
   'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر',
 ];
-const CONTEXT_TABLE_HEADER = '| مدل | پنجره کانتکست | تقریباً چند صفحه کتاب؟ |';
+const SNAPSHOT_LABEL_PATTERN = new RegExp(
+  `(?:${PERSIAN_MONTHS.join('|')}) [۰-۹]{4} \\((?:${GREGORIAN_MONTHS.join('|')}) [۰-۹]{4}\\)`,
+  'gu',
+);
+const CONTEXT_TABLE_HEADER = '| مدل | پنجره کانتکست | تقریباً چند صفحه کتاب انگلیسی؟ |';
 const CONTEXT_QUALIFIER_PATTERN = /(?:^|\s)(?:حدود|تا)(?:\s|$)/u;
 
 function toPersianDigits(value) {
@@ -79,9 +83,10 @@ export function validateVolatileData(source, now = new Date()) {
   }
 
   const expectedLabel = readerVisibleSnapshotLabel(reviewedMonth);
-  const visibleOccurrences = source.split(expectedLabel).length - 1;
-  if (visibleOccurrences !== 3) {
-    throw new Error(`Expected all 3 reader-visible snapshot dates to be "${expectedLabel}"; found ${visibleOccurrences}.`);
+  const visibleLabels = [...source.matchAll(SNAPSHOT_LABEL_PATTERN)].map(([label]) => label);
+  const visibleOccurrences = visibleLabels.filter((label) => label === expectedLabel).length;
+  if (visibleLabels.length !== 5 || visibleOccurrences !== 5) {
+    throw new Error(`Expected all 5 reader-visible snapshot dates to be "${expectedLabel}"; found ${visibleOccurrences}/${visibleLabels.length}.`);
   }
 
   const qualifiedContextCells = extractContextWindowCells(source)
