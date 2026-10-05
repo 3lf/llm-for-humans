@@ -14,7 +14,7 @@ test('formats a major-two prerelease for the cover and colophon', () => {
   });
 
   assert.deepEqual(metadata, {
-    edition: 'ویرایش دوم · ۱۱ مرداد ۱۴۰۵ · 2 August 2026',
+    edition: 'ویرایش دوم · ۱۱ مرداد ۱۴۰۵ · (2 August 2026)',
     localDate: '۱۱ مرداد ۱۴۰۵',
     latinDate: 'v2.1.0-rc.1 · 2 August 2026',
     persianDate: '۱۱ مرداد ۱۴۰۵',

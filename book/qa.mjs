@@ -95,6 +95,10 @@ export default async function runProjectQa({ config, manifest, check }) {
     check(manifest.releaseVersion === releaseMetadata.releaseVersion, 'manifest release version matches pipeline metadata');
     check(plainHtml.includes(releaseMetadata.persianDate), 'colophon uses the pipeline Persian release date');
     check(plainHtml.includes(releaseMetadata.gregorianDate), 'colophon uses the pipeline Gregorian release date');
+    check(
+      html.includes(`>(${releaseMetadata.gregorianDate})</bdi>`),
+      'colophon keeps the complete Gregorian date in one LTR isolate',
+    );
     check(plainHtml.includes(releaseMetadata.releaseVersion), 'colophon shows the pipeline release version');
   }
 

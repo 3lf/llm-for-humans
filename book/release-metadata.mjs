@@ -20,7 +20,7 @@ const PERSIAN_MONTHS = [
 const RELEASE_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 export const DEFAULT_BOOK_METADATA = Object.freeze({
-  edition: 'ویرایش اول · ۲۳ تیر ۱۴۰۵ · 14 July 2026',
+  edition: 'ویرایش اول · ۲۳ تیر ۱۴۰۵ · (14 July 2026)',
   localDate: '۲۳ تیر ۱۴۰۵',
   latinDate: '14 July 2026',
   persianDate: '۲۳ تیر ۱۴۰۵',
@@ -93,7 +93,7 @@ export function formatReleaseMetadata({ releaseVersion, releaseDate }) {
   }).format(date);
 
   return {
-    edition: `${parsedVersion.editionLabel} · ${persianDate} · ${gregorianDate}`,
+    edition: `${parsedVersion.editionLabel} · ${persianDate} · (${gregorianDate})`,
     localDate: persianDate,
     latinDate: `${releaseVersion} · ${gregorianDate}`,
     persianDate,
