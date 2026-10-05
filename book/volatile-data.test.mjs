@@ -14,16 +14,19 @@ import {
 const bookDirectory = path.dirname(fileURLToPath(import.meta.url));
 const readme = fs.readFileSync(path.join(bookDirectory, '..', 'README.md'), 'utf8');
 const juneSnapshot = '<!-- volatile-data-reviewed: 2026-06 -->\n'
-  + 'خرداد ۱۴۰۵ (ژوئن ۲۰۲۶)\n'.repeat(3)
-  + '| مدل | پنجره کانتکست | تقریباً چند صفحه کتاب؟ |\n'
+  + 'خرداد ۱۴۰۵ (ژوئن ۲۰۲۶)\n'.repeat(5)
+  + '| مدل | پنجره کانتکست | تقریباً چند صفحه کتاب انگلیسی؟ |\n'
   + '| :--- | :--- | :--- |\n'
   + '| مدل نمونه | 262K توکن | حدود ۴۰۰ صفحه |\n';
 
-test('the README marker agrees with all three reader-visible snapshot dates', () => {
-  assert.deepEqual(validateVolatileData(readme, new Date('2026-08-24T00:00:00Z')), {
-    reviewedMonth: { year: 2026, month: 6 },
+test('the README marker agrees with all five reader-visible snapshot dates', () => {
+  const [, yearText, monthText] = readme.match(/<!-- volatile-data-reviewed: (\d{4})-(\d{2}) -->/u);
+  const reviewedMonth = { year: Number(yearText), month: Number(monthText) };
+  const twoMonthsLater = new Date(Date.UTC(reviewedMonth.year, reviewedMonth.month + 1, 1));
+  assert.deepEqual(validateVolatileData(readme, twoMonthsLater), {
+    reviewedMonth,
     ageInMonths: 2,
-    expectedLabel: 'خرداد ۱۴۰۵ (ژوئن ۲۰۲۶)',
+    expectedLabel: readerVisibleSnapshotLabel(reviewedMonth),
   });
 });
 
@@ -51,7 +54,24 @@ test('the age calculation depends only on injected calendar months', () => {
 test('a mismatched reader-visible date is rejected', () => {
   assert.throws(
     () => validateVolatileData(juneSnapshot.replace('خرداد', 'تیر'), new Date('2026-08-24T00:00:00Z')),
-    /all 3 reader-visible snapshot dates/,
+    /all 5 reader-visible snapshot dates/,
+  );
+});
+
+test('a mismatched fifth snapshot date is rejected', () => {
+  const labels = juneSnapshot.split('خرداد ۱۴۰۵ (ژوئن ۲۰۲۶)');
+  const mismatched = labels.slice(0, 5).join('خرداد ۱۴۰۵ (ژوئن ۲۰۲۶)')
+    + 'تیر ۱۴۰۵ (ژوئن ۲۰۲۶)' + labels[5];
+  assert.throws(
+    () => validateVolatileData(mismatched, new Date('2026-08-24T00:00:00Z')),
+    /all 5 reader-visible snapshot dates/,
+  );
+});
+
+test('an extra snapshot date cannot hide a mismatched label', () => {
+  assert.throws(
+    () => validateVolatileData(`${juneSnapshot}تیر ۱۴۰۵ (ژوئن ۲۰۲۶)\n`, new Date('2026-08-24T00:00:00Z')),
+    /all 5 reader-visible snapshot dates/,
   );
 });
 

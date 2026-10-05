@@ -17,7 +17,7 @@ function occurrences(haystack, needle) {
 }
 
 test('derives mixed-direction context tokens from the README model table', () => {
-  assert.deepEqual(extractModelContextTokens(source), ['1M', '400K', '200K', '256K', '262K', '10M']);
+  assert.deepEqual(extractModelContextTokens(source), ['1M', '200K', '262K', '10M']);
   assert.deepEqual(additionalMixedDirectionTokens, ['Persian-Phi']);
   for (const token of additionalMixedDirectionTokens) {
     assert.equal(occurrences(source, token), 1, token);
