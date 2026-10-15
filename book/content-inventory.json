@@ -2,19 +2,19 @@
   "schemaVersion": 1,
   "parts": 9,
   "chapters": 31,
-  "headings": 364,
-  "subheadings": 298,
-  "tocEntries": 73,
+  "headings": 362,
+  "subheadings": 296,
+  "tocEntries": 71,
   "pages": {
-    "normal": 292,
-    "print": 292,
-    "high": 292
+    "normal": 287,
+    "print": 287,
+    "high": 287
   },
   "figures": 50,
   "callouts": {
-    "total": 133,
+    "total": 132,
     "byKind": {
-      "note": 75,
+      "note": 74,
       "tip": 39,
       "warn": 15,
       "date": 2,

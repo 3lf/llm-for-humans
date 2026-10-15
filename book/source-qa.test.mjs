@@ -211,8 +211,8 @@ test('CLI prints actionable anchor failures and exits nonzero', () => {
 test('current README keeps the rendered heading and internal-link baseline', () => {
   const source = readFileSync(join(import.meta.dirname, '..', 'README.md'), 'utf8');
   const result = validateInternalAnchors(source);
-  assert.equal(result.headings.length, 365);
-  assert.equal(result.links.length, 195);
+  assert.equal(result.headings.length, 363);
+  assert.equal(result.links.length, 192);
   assert.deepEqual(result.mismatches, []);
 });
 
