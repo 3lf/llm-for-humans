@@ -1,23 +1,23 @@
 {
   "schemaVersion": 1,
   "parts": 9,
-  "chapters": 30,
-  "headings": 355,
-  "subheadings": 290,
-  "tocEntries": 65,
+  "chapters": 31,
+  "headings": 364,
+  "subheadings": 298,
+  "tocEntries": 73,
   "pages": {
-    "normal": 277,
-    "print": 277,
-    "high": 277
+    "normal": 289,
+    "print": 289,
+    "high": 289
   },
   "figures": 50,
   "callouts": {
-    "total": 130,
+    "total": 131,
     "byKind": {
       "note": 74,
       "tip": 38,
       "warn": 15,
-      "date": 1,
+      "date": 2,
       "new": 1,
       "star": 1
     }

@@ -120,7 +120,7 @@ export default {
   qa: {
     script: 'qa.mjs',
     minPages: 250,
-    maxPages: 280,
+    maxPages: 300,
     minimumDestinations: 100,
     requireSourceCommit: true,
     fontFamilies: ['Estedad', 'Vazirmatn', 'JetBrainsMono'],
