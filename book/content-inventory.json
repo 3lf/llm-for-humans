@@ -6,16 +6,16 @@
   "subheadings": 298,
   "tocEntries": 73,
   "pages": {
-    "normal": 289,
-    "print": 289,
-    "high": 289
+    "normal": 292,
+    "print": 292,
+    "high": 292
   },
   "figures": 50,
   "callouts": {
-    "total": 131,
+    "total": 133,
     "byKind": {
-      "note": 74,
-      "tip": 38,
+      "note": 75,
+      "tip": 39,
       "warn": 15,
       "date": 2,
       "new": 1,
