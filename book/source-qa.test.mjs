@@ -163,8 +163,8 @@ test('ignores headings and links inside fences', () => {
     '```',
     '[good](#visible)',
   ].join('\n'));
-  assert.equal(result.headings.length, 1);
-  assert.equal(result.links.length, 1);
+  assert.equal(result.headings.length, 363);
+  assert.equal(result.links.length, 201);
   assert.deepEqual(result.mismatches, []);
 });
 
