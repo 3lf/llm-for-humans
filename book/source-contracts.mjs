@@ -1,4 +1,4 @@
-const MODEL_TABLE_HEADER = '| مدل | ارائه‌دهنده | نوع | کانتکست | چندوجهی | فارسی | نکته کلیدی |';
+const MODEL_TABLE_HEADER = '| مدل | ارائه‌دهنده | نوع | کانتکست | ورودی و خروجی | نکته کلیدی |';
 export const additionalMixedDirectionTokens = ['Persian-Phi'];
 
 export function extractModelContextTokens(source) {
