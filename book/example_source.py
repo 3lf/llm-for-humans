@@ -7,32 +7,64 @@ import re
 README = Path(__file__).resolve().parent.parent / "README.md"
 
 
-def find_python_block(marker: str) -> str:
-    """Return the unique Python fence containing marker, including quoted fences."""
-    blocks = []
-    current = None
-    depth = 0
-    fence = ""
-    for line in README.read_text(encoding="utf-8").splitlines():
-        if current is None:
-            match = re.fullmatch(r"((?:> ?)*)((?:`){3,})python\s*", line)
-            if match:
-                current = []
-                depth = match.group(1).count(">")
-                fence = match.group(2)
+def _quote_prefix(line):
+    """Match the same quote depth and fence rules as book/source-qa.mjs."""
+    cursor, depth = 0, 0
+    while True:
+        match = re.match(r" {0,3}> ?", line[cursor:])
+        if not match:
+            break
+        cursor += match.end()
+        depth += 1
+    return line[cursor:], depth
+
+
+def _python_blocks(source):
+    blocks, lines = [], []
+    fence = None
+    for line in source.splitlines():
+        body, depth = _quote_prefix(line)
+        if fence is None:
+            opener = re.fullmatch(r"( {0,3})(`{3,}|~{3,})(.*)", body)
+            if not opener:
+                continue
+            indentation, marker, info = opener.groups()
+            if marker[0] == "`" and "`" in info:
+                continue
+            language = info.strip().split(maxsplit=1)
+            fence = (marker[0], len(marker), depth, len(indentation),
+                     bool(language and language[0] == "python"))
+            lines = []
             continue
-        code_line = line
-        for _ in range(depth):
-            if code_line.startswith(">"):
-                code_line = code_line[1:]
-                if code_line.startswith(" "):
-                    code_line = code_line[1:]
-        if code_line.strip() == fence:
-            blocks.append("\n".join(current) + "\n")
-            current = None
-        else:
-            current.append(code_line)
-    matches = [block for block in blocks if marker in block]
+        character, length, quote_depth, indentation, is_python = fence
+        closer = re.fullmatch(r" {0,3}(`+|~+)[ \t]*", body)
+        if (closer and depth == quote_depth
+                and closer[1][0] == character and len(closer[1]) >= length):
+            if is_python:
+                blocks.append("\n".join(lines) + "\n")
+            fence = None
+            continue
+        if is_python:
+            # Strip only the opener's quote prefix; a further > is code content.
+            code_line = line
+            for _ in range(quote_depth):
+                prefix = re.match(r" {0,3}> ?", code_line)
+                if not prefix:
+                    break
+                code_line = code_line[prefix.end():]
+            remove = min(indentation, len(code_line) - len(code_line.lstrip(" ")))
+            lines.append(code_line[remove:])
+    return blocks
+
+
+def find_python_block(marker: str) -> str:
+    """Return the unique executable Python fence containing marker.
+
+    Every outer fence is tracked, so a displayed Python fence inside a text or
+    Markdown example is never mistaken for an executable example.
+    """
+    matches = [block for block in _python_blocks(README.read_text(encoding="utf-8"))
+               if marker in block]
     if len(matches) != 1:
         raise ValueError(f"Expected one Python example for {marker!r}; found {len(matches)}")
     return matches[0]
