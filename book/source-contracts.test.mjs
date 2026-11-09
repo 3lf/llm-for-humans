@@ -24,6 +24,19 @@ test('derives mixed-direction context tokens from the README model table', () =>
   }
 });
 
+test('rejects one malformed model row even when other rows have valid tokens', () => {
+  for (const context of ['', 'یک میلیون', '1M?', '1M extra', '1M / 2M']) {
+    const altered = source.replace('| بسته | 1M |', `| بسته | ${context} |`);
+    assert.notEqual(altered, source);
+    assert.throws(() => extractModelContextTokens(altered), /Model row without a valid context token/u);
+  }
+});
+
+test('derives a newly introduced context value for mixed-direction rendering QA', () => {
+  const altered = source.replace('| بسته | 1M |', '| بسته | 400K |');
+  assert.deepEqual(extractModelContextTokens(altered), ['400K', '1M', '262K', '10M']);
+});
+
 test('every configured source selector has a label and occurs exactly once', () => {
   const rules = configuredSourceSelectors(config);
   const visibleSource = source.replace(/\*\*|__|~~/gu, '');

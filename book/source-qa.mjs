@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 const STRONG_CHARACTER = /[\p{Script=Arabic}\p{Script=Latin}]/u;
 const LATIN_CHARACTER = /\p{Script=Latin}/u;
 const SLUG_CHARACTER = /[\p{Alphabetic}\p{Mark}\p{Number}]/u;
+export const GITHUB_README_RENDER_LIMIT_BYTES = 500 * 1024;
 
 function splitBlockQuotePrefix(line) {
   let cursor = 0;
@@ -238,12 +239,17 @@ function decodeFragment(fragment) {
 export function validateInternalAnchors(source) {
   const headings = [];
   const links = [];
+  const explicitAnchors = new Set();
   const occupied = new Set();
   const nextSuffix = new Map();
   let nearestHeading = null;
 
   for (const entry of sourceLines(source)) {
     if (entry.inFence) continue;
+
+    for (const match of maskInlineCode(entry.line).matchAll(/^ {0,3}<a\s+[^>]*\b(?:id|name)=["']([^"']+)["'][^>]*>/giu)) {
+      explicitAnchors.add(decodeHtmlEntities(match[1]));
+    }
 
     const heading = extractHeading(entry.line);
     if (heading) {
@@ -274,10 +280,30 @@ export function validateInternalAnchors(source) {
   }
 
   const mismatches = links
-    .filter((link) => !occupied.has(link.target))
+    .filter((link) => !occupied.has(link.target) && !explicitAnchors.has(link.target))
     .map(({ fragment, line, nearestHeading }) => ({ fragment, line, nearestHeading }));
 
   return { headings, links, mismatches };
+}
+
+export function validateGitHubReadmeVisibility(source) {
+  const byteLength = Buffer.byteLength(source, 'utf8');
+  const exceedsRenderLimit = byteLength > GITHUB_README_RENDER_LIMIT_BYTES;
+  const notice = source.match(/<!-- github-full-readme -->\r?\n(> [^\r\n]+)/u);
+  const fullTextUrl = notice?.[1].match(
+    /\]\((https:\/\/raw\.githubusercontent\.com\/3lf\/llm-for-humans\/(?:refs\/heads\/)?main\/README\.md)\)/u,
+  )?.[1] ?? null;
+  const toc = validateInternalAnchors(source).headings.find(({ text }) => text.startsWith('فهرست مطالب'));
+  const noticeLine = notice ? source.slice(0, notice.index).split(/\r?\n/u).length : null;
+  const noticeIsVisible = notice
+    && sourceLines(source).some((entry) => !entry.inFence && entry.lineNumber === noticeLine + 1 && entry.line === notice[1])
+    && Buffer.byteLength(source.slice(0, notice.index + notice[0].length), 'utf8') <= GITHUB_README_RENDER_LIMIT_BYTES
+    && (!toc || noticeLine < toc.line);
+
+  if (exceedsRenderLimit && (!fullTextUrl || !noticeIsVisible)) {
+    throw new Error('README exceeds GitHub\'s render limit; add a visible full-text notice with a Raw main link before the table of contents.');
+  }
+  return { byteLength, exceedsRenderLimit, fullTextUrl, noticeLine };
 }
 
 function formatLines(lines) {
@@ -302,6 +328,15 @@ function runCli() {
         `line ${mismatch.line}: fragment "${mismatch.fragment}" (nearest heading: "${mismatch.nearestHeading}")`,
       );
     }
+    failed = true;
+  }
+  try {
+    const visibility = validateGitHubReadmeVisibility(source);
+    if (visibility.exceedsRenderLimit) {
+      console.warn(`README is ${visibility.byteLength} bytes (GitHub limit: ${GITHUB_README_RENDER_LIMIT_BYTES}); the visible notice links to full Raw main content.`);
+    }
+  } catch (error) {
+    console.error(error.message);
     failed = true;
   }
   if (failed) {

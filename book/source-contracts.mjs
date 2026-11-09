@@ -7,9 +7,12 @@ export function extractModelContextTokens(source) {
   const tableEnd = source.indexOf('\n\n', tableStart);
   const table = source.slice(tableStart, tableEnd < 0 ? source.length : tableEnd);
   const rows = table.split(/\r?\n/u).slice(2).filter((line) => line.startsWith('|'));
-  const tokens = rows.flatMap((row) => {
+  const tokens = rows.map((row) => {
     const context = row.split('|')[4]?.trim() ?? '';
-    return [...context.matchAll(/[0-9]+(?:\.[0-9]+)?[MK]/gu)].map((match) => match[0]);
+    if (!/^[0-9]+(?:\.[0-9]+)?[MK]$/u.test(context)) {
+      throw new Error(`Model row without a valid context token: ${row}`);
+    }
+    return context;
   });
   if (tokens.length === 0) throw new Error('Model snapshot table has no context tokens.');
   return [...new Set(tokens)];
