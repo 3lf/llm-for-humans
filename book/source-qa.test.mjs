@@ -163,8 +163,8 @@ test('ignores headings and links inside fences', () => {
     '```',
     '[good](#visible)',
   ].join('\n'));
-  assert.equal(result.headings.length, 363);
-  assert.equal(result.links.length, 201);
+  assert.equal(result.headings.length, 1);
+  assert.equal(result.links.length, 1);
   assert.deepEqual(result.mismatches, []);
 });
 
@@ -297,7 +297,7 @@ test('current README keeps the rendered heading and internal-link baseline', () 
   const source = readFileSync(join(import.meta.dirname, '..', 'README.md'), 'utf8');
   const result = validateInternalAnchors(source);
   assert.equal(result.headings.length, 363);
-  assert.equal(result.links.length, 199);
+  assert.equal(result.links.length, 201);
   assert.deepEqual(result.mismatches, []);
 });
 
