@@ -120,7 +120,10 @@ export default {
   qa: {
     script: 'qa.mjs',
     minPages: 250,
-    maxPages: 300,
+    // Reviewed RAG/retry examples bring all three editions to 304 pages.
+    // Keep readable examples with a deliberate 310-page budget; exact counts
+    // remain locked per edition in content-inventory.json.
+    maxPages: 310,
     minimumDestinations: 100,
     requireSourceCommit: true,
     fontFamilies: ['Estedad', 'Vazirmatn', 'JetBrainsMono'],
