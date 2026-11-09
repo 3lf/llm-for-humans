@@ -76,6 +76,20 @@ class JudgeExampleTests(unittest.TestCase):
         self.assertEqual(score.clarity.score, 3)
         self.assertIsNone(average)
 
+    def test_blank_required_points_cannot_preserve_fabricated_completeness(self):
+        score, average, prompt = self.invoke(values=(5, 5, 5), points=["  ", "", "\t\n"])
+        self.assertIsNone(score.completeness.score)
+        self.assertEqual(score.accuracy.score, 5)
+        self.assertEqual(score.clarity.score, 5)
+        self.assertIsNone(average)
+        self.assertIn("نکته‌های لازم: \n", prompt)
+
+    def test_real_required_points_are_trimmed_and_blank_entries_removed(self):
+        score, average, prompt = self.invoke(points=["  Required fact  ", "", "\t"])
+        self.assertEqual(score.completeness.score, 4)
+        self.assertEqual(average, 4.0)
+        self.assertIn("نکته‌های لازم: - Required fact\n", prompt)
+
     def test_prompt_contains_inputs_rubric_anchors_and_abstention_rule(self):
         _, _, prompt = self.invoke()
         for text in ("Test question", "Checked reference", "Required fact", "Test model output",
