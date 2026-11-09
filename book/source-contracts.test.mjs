@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import test from 'node:test';
 
 import config from './readme-press.config.mjs';
+import { visibleHeadingText } from './source-qa.mjs';
 import {
   additionalMixedDirectionTokens,
   configuredSourceSelectors,
@@ -51,4 +52,36 @@ test('every configured source selector has a label and occurs exactly once', () 
       : rule.sourceForm === 'h1' ? h1Source : source;
     assert.equal(occurrences(corpus, rule.selector), 1, rule.label);
   }
+});
+
+// Source preflight only: the PDF QA still checks actual extracted PDF text.
+function visibleBodyText(markdown) {
+  const firstChapter = `\n# ${config.structure.parts[0].startHeading}`;
+  const bodyStart = markdown.indexOf(firstChapter);
+  assert.ok(bodyStart >= 0, 'The configured first body chapter must exist.');
+  return markdown.slice(bodyStart)
+    .replace(/<!--[\s\S]*?-->/gu, '')
+    .replace(/!\[[^\]\r\n]*\](?:\([^)]*\)|\[[^\]\r\n]*\])/gu, '')
+    .split(/\r?\n/u)
+    .filter((line) => !/^ {0,3}\[[^\]]+\]:/u.test(line))
+    .map(visibleHeadingText)
+    .join('\n');
+}
+
+test('every PDF extractability phrase still occurs in visible README body text', () => {
+  const phrases = config.qa.extractablePhrases;
+  assert.ok(phrases.length > 0, 'Keep PDF extractability sentinels configured.');
+  const visibleBody = visibleBodyText(source);
+  for (const phrase of phrases) {
+    assert.ok(phrase.length > 0);
+    assert.ok(visibleBody.includes(phrase), `PDF extractability phrase missing from README body: ${phrase}`);
+  }
+});
+
+test('comments and image descriptions cannot satisfy a deleted PDF body phrase', () => {
+  const phrase = config.qa.extractablePhrases[0];
+  const altered = source.replaceAll(phrase, '')
+    + `\n<!-- ${phrase} -->\n![${phrase}](images/example.png)\n`
+    + `<img src="images/example.png" alt="${phrase}">\n`;
+  assert.equal(visibleBodyText(altered).includes(phrase), false);
 });
