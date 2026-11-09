@@ -1,0 +1,37 @@
+{
+  "source_pdf": "book/dist/llm-for-humans-book.pdf",
+  "source_pdf_sha256": "bcbd9d00a865b94366ee42c46b8c61bec7242d44e2b51896ad8120f261474c1d",
+  "source_commit": "227b2c3027d65f91aed842e56ca37bd75d8fb6f6",
+  "source_readme_sha256": "bc41b56c01063e17afc3ec433884e8fdb185461183360d9b7a2b7614e7de7a51",
+  "selections": [
+    {
+      "kind": "intro",
+      "physical_pdf_page": 7,
+      "printed_page_number": 6,
+      "path": "images/book-preview-intro.png",
+      "dimensions": [
+        1138,
+        1607
+      ],
+      "dpi": 170,
+      "sha256": "e4bd8fe6dcca2718c722d37bc69435f3cfe036d9df2611c895083396e365ab51",
+      "export": "pdftoppm -f PAGE -l PAGE -r 170 -png -singlefile; inspected PNG bytes copied without cropping, drawing or resizing"
+    },
+    {
+      "kind": "concepts",
+      "physical_pdf_page": 14,
+      "printed_page_number": 13,
+      "path": "images/book-preview-concepts.png",
+      "dimensions": [
+        1138,
+        1607
+      ],
+      "dpi": 170,
+      "sha256": "a22c0e8f7b7cd433cdbbf9c0f2bd234152fbe2a0b1b0ee6d0eb3688f30ead69f",
+      "export": "pdftoppm -f PAGE -l PAGE -r 170 -png -singlefile; inspected PNG bytes copied without cropping, drawing or resizing"
+    }
+  ],
+  "manual_inspection": "Both pages viewed. Intro is actual preface, concepts is stable embedding/semantic-map explanation. Neither is cover/colophon nor shows CI version, price/free-tier/date-sensitive claims or fixed Persian-token ratio. Text and illustrative diagram fit without clipping.",
+  "publication": "Sample internal pages of currently built text; not a newly published release.",
+  "source_pdf_availability": "Local validation artifact; regenerated with the locked engine and release metadata. The hash identifies the inspected source, not a published release."
+}
