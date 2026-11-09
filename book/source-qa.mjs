@@ -67,13 +67,39 @@ function isIndentedCodeLine(line) {
   return false;
 }
 
+function stripHtmlCommentLine(line, inComment) {
+  const codeMasked = maskInlineCode(line);
+  const visible = [];
+  let cursor = 0;
+  while (cursor < line.length) {
+    if (inComment) {
+      const end = line.indexOf('-->', cursor);
+      if (end < 0) break;
+      cursor = end + 3;
+      inComment = false;
+    } else {
+      const start = codeMasked.indexOf('<!--', cursor);
+      if (start < 0) {
+        visible.push(line.slice(cursor));
+        break;
+      }
+      visible.push(line.slice(cursor, start));
+      cursor = start + 4;
+      inComment = true;
+    }
+  }
+  return { line: visible.join(''), inComment };
+}
+
 function sourceLines(source) {
   const result = [];
   let fence = null;
   let indentedCode = false;
+  let htmlComment = false;
   let previousLineWasBlank = true;
 
-  for (const [index, line] of source.split(/\r?\n/u).entries()) {
+  for (const [index, rawLine] of source.split(/\r?\n/u).entries()) {
+    let line = rawLine;
     if (fence) {
       if (isFenceCloser(line, fence)) {
         fence = null;
@@ -95,7 +121,7 @@ function sourceLines(source) {
       startsAfterCode = true;
     }
 
-    const opener = parseFenceOpener(line);
+    const opener = htmlComment ? null : parseFenceOpener(line);
     if (opener) {
       fence = opener;
       previousLineWasBlank = false;
@@ -103,13 +129,14 @@ function sourceLines(source) {
       continue;
     }
 
-    if (previousLineWasBlank && line.trim() && isIndentedCodeLine(line)) {
+    if (!htmlComment && previousLineWasBlank && line.trim() && isIndentedCodeLine(line)) {
       indentedCode = true;
       previousLineWasBlank = false;
       result.push({ closingFence: false, inFence: true, line, lineNumber: index + 1 });
       continue;
     }
 
+    ({ line, inComment: htmlComment } = stripHtmlCommentLine(line, htmlComment));
     result.push({ closingFence: false, inFence: false, line, lineNumber: index + 1, startsAfterCode });
     previousLineWasBlank = !line.trim();
   }

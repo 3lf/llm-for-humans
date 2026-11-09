@@ -191,6 +191,35 @@ test('an inline-code or commented anchor does not create a real target', () => {
   assert.equal(result.mismatches.length, 1);
 });
 
+test('multiline HTML comments hide anchors, headings and links while retaining source line numbers', () => {
+  const result = validateInternalAnchors([
+    '<!--',
+    '<a id="hidden-old"></a>',
+    '# Hidden',
+    '[hidden](#also-missing)',
+    '-->',
+    '# Visible',
+    '[old](#hidden-old)',
+  ].join('\n'));
+  assert.deepEqual(result.headings.map(({ text }) => text), ['Visible']);
+  assert.equal(result.links.length, 1);
+  assert.deepEqual(result.mismatches, [{ line: 7, fragment: '#hidden-old', nearestHeading: 'Visible' }]);
+});
+
+test('comment delimiters in code examples do not hide later real content', () => {
+  for (const code of ['```html\n<!--\n```', '`<!--`', '    <!--']) {
+    const result = validateInternalAnchors(`${code}\n\n# Visible\n[jump](#visible)`);
+    assert.deepEqual(result.headings.map(({ text }) => text), ['Visible']);
+    assert.deepEqual(result.mismatches, []);
+  }
+});
+
+test('fence markers inside comments do not hide later real content', () => {
+  const result = validateInternalAnchors('<!--\n```html\n-->\n# Visible\n[jump](#visible)');
+  assert.deepEqual(result.headings.map(({ text }) => text), ['Visible']);
+  assert.deepEqual(result.mismatches, []);
+});
+
 const fullReadmeNotice = '<!-- github-full-readme -->\n'
   + '> متن کامل در [شاخه main](https://raw.githubusercontent.com/3lf/llm-for-humans/main/README.md)\n';
 
