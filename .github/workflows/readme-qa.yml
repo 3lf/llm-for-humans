@@ -32,7 +32,7 @@ jobs:
   source-and-metadata:
     name: Check source and release metadata
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Check out the source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -50,6 +50,18 @@ jobs:
           npm test --prefix book
           node --check book/qa.mjs
           node --check book/readme-press.config.mjs
+
+      - name: Set up Python for keyless README examples
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: book/requirements-examples-test.txt
+
+      - name: Test executable README examples without API calls
+        run: |
+          python -m pip install -r book/requirements-examples-test.txt
+          python -m unittest discover -s book -p 'test_examples_*.py' -v
 
       - name: Reject prose whose first strong character is Latin
         run: node book/source-qa.mjs README.md

@@ -1,0 +1,8 @@
+# Keyless README integration tests, Python 3.12. No API keys are required.
+langchain-core==1.7.4
+langchain-openai==1.6.3
+openai==3.48.0
+pydantic==2.14.3
+httpx==0.28.1
+httpx2==2.16.0
+tiktoken==0.14.0
