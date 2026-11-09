@@ -8,6 +8,8 @@ import test from 'node:test';
 import {
   findUnsafeGitHubBlockStarts,
   githubHeadingSlug,
+  GITHUB_README_RENDER_LIMIT_BYTES,
+  validateGitHubReadmeVisibility,
   validateInternalAnchors,
   visibleHeadingText,
 } from './source-qa.mjs';
@@ -166,6 +168,89 @@ test('ignores headings and links inside fences', () => {
   assert.deepEqual(result.mismatches, []);
 });
 
+test('accepts explicit compatibility anchors without changing heading slug suffixes', () => {
+  const result = validateInternalAnchors([
+    '<a id="old-title"></a>',
+    '<a name="alpha"></a>',
+    '# Alpha',
+    '# New title',
+    '[old](#old-title)',
+    '[current](#new-title)',
+  ].join('\n'));
+  assert.deepEqual(result.headings.map(({ slug }) => slug), ['alpha', 'new-title']);
+  assert.deepEqual(result.mismatches, []);
+});
+
+test('compatibility anchors inside fenced examples do not create real targets', () => {
+  const result = validateInternalAnchors('```html\n<a id="old-title"></a>\n```\n[old](#old-title)');
+  assert.equal(result.mismatches.length, 1);
+});
+
+test('an inline-code or commented anchor does not create a real target', () => {
+  const result = validateInternalAnchors('`<a id="old-title"></a>`\n<!-- <a id="old-title"></a> -->\n[old](#old-title)');
+  assert.equal(result.mismatches.length, 1);
+});
+
+test('multiline HTML comments hide anchors, headings and links while retaining source line numbers', () => {
+  const result = validateInternalAnchors([
+    '<!--',
+    '<a id="hidden-old"></a>',
+    '# Hidden',
+    '[hidden](#also-missing)',
+    '-->',
+    '# Visible',
+    '[old](#hidden-old)',
+  ].join('\n'));
+  assert.deepEqual(result.headings.map(({ text }) => text), ['Visible']);
+  assert.equal(result.links.length, 1);
+  assert.deepEqual(result.mismatches, [{ line: 7, fragment: '#hidden-old', nearestHeading: 'Visible' }]);
+});
+
+test('comment delimiters in code examples do not hide later real content', () => {
+  for (const code of ['```html\n<!--\n```', '`<!--`', '    <!--']) {
+    const result = validateInternalAnchors(`${code}\n\n# Visible\n[jump](#visible)`);
+    assert.deepEqual(result.headings.map(({ text }) => text), ['Visible']);
+    assert.deepEqual(result.mismatches, []);
+  }
+});
+
+test('fence markers inside comments do not hide later real content', () => {
+  const result = validateInternalAnchors('<!--\n```html\n-->\n# Visible\n[jump](#visible)');
+  assert.deepEqual(result.headings.map(({ text }) => text), ['Visible']);
+  assert.deepEqual(result.mismatches, []);
+});
+
+const fullReadmeNotice = '<!-- github-full-readme -->\n'
+  + '> متن کامل در [شاخه main](https://raw.githubusercontent.com/3lf/llm-for-humans/main/README.md)\n';
+
+test('small READMEs need no truncation notice', () => {
+  assert.equal(validateGitHubReadmeVisibility('# بخش\nمتن').exceedsRenderLimit, false);
+});
+
+test('large READMEs need an early visible notice linking to complete source', () => {
+  const source = `${fullReadmeNotice}# فهرست مطالب\n${'م'.repeat(GITHUB_README_RENDER_LIMIT_BYTES / 2)}`;
+  const result = validateGitHubReadmeVisibility(source);
+  assert.equal(result.byteLength, Buffer.byteLength(source));
+  assert.equal(result.exceedsRenderLimit, true);
+  assert.equal(result.noticeLine, 1);
+  assert.match(result.fullTextUrl, /raw\.githubusercontent\.com/u);
+  assert.throws(() => validateGitHubReadmeVisibility(source.replace(fullReadmeNotice, '')), /visible full-text notice/u);
+  assert.throws(() => validateGitHubReadmeVisibility(source.replace('raw.githubusercontent.com', 'example.com')), /visible full-text notice/u);
+});
+
+test('a notice below the TOC or beyond the byte cutoff does not fix truncation', () => {
+  const padding = 'م'.repeat(GITHUB_README_RENDER_LIMIT_BYTES / 2);
+  assert.throws(() => validateGitHubReadmeVisibility(`# فهرست مطالب\n${fullReadmeNotice}${padding}`), /visible full-text notice/u);
+  assert.throws(() => validateGitHubReadmeVisibility(`${padding}\n${fullReadmeNotice}`), /visible full-text notice/u);
+  assert.throws(() => validateGitHubReadmeVisibility(`\`\`\`md\n${fullReadmeNotice}\`\`\`\n${padding}`), /visible full-text notice/u);
+});
+
+test('current README retains a visible and complete-source fallback', () => {
+  const source = readFileSync(join(import.meta.dirname, '..', 'README.md'), 'utf8');
+  const result = validateGitHubReadmeVisibility(source);
+  assert.ok(result.fullTextUrl);
+});
+
 test('ignores headings and links inside indented code blocks', () => {
   const result = validateInternalAnchors([
     '    # Hidden',
@@ -212,7 +297,7 @@ test('current README keeps the rendered heading and internal-link baseline', () 
   const source = readFileSync(join(import.meta.dirname, '..', 'README.md'), 'utf8');
   const result = validateInternalAnchors(source);
   assert.equal(result.headings.length, 363);
-  assert.equal(result.links.length, 192);
+  assert.equal(result.links.length, 195);
   assert.deepEqual(result.mismatches, []);
 });
 

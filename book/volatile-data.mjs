@@ -17,7 +17,7 @@ const SNAPSHOT_LABEL_PATTERN = new RegExp(
   `(?:${PERSIAN_MONTHS.join('|')}) [۰-۹]{4} \\((?:${GREGORIAN_MONTHS.join('|')}) [۰-۹]{4}\\)`,
   'gu',
 );
-const CONTEXT_TABLE_HEADER = '| مدل | پنجره کانتکست | تقریباً چند صفحه کتاب انگلیسی؟ |';
+const CONTEXT_TABLE_HEADER = '| مدل | پنجره کانتکست |';
 const CONTEXT_QUALIFIER_PATTERN = /(?:^|\s)(?:حدود|تا)(?:\s|$)/u;
 
 function toPersianDigits(value) {
@@ -44,7 +44,7 @@ export function extractContextWindowCells(source) {
   for (const line of lines.slice(headerIndex + 2)) {
     if (!line.trim().startsWith('|')) break;
     const columns = line.split('|').slice(1, -1).map((column) => column.trim());
-    if (columns.length !== 3 || !columns[1]) {
+    if (columns.length !== 2 || !columns[1]) {
       throw new Error(`Malformed model context-window row: ${line.trim()}`);
     }
     cells.push(columns[1]);
@@ -85,8 +85,8 @@ export function validateVolatileData(source, now = new Date()) {
   const expectedLabel = readerVisibleSnapshotLabel(reviewedMonth);
   const visibleLabels = [...source.matchAll(SNAPSHOT_LABEL_PATTERN)].map(([label]) => label);
   const visibleOccurrences = visibleLabels.filter((label) => label === expectedLabel).length;
-  if (visibleLabels.length !== 5 || visibleOccurrences !== 5) {
-    throw new Error(`Expected all 5 reader-visible snapshot dates to be "${expectedLabel}"; found ${visibleOccurrences}/${visibleLabels.length}.`);
+  if (visibleLabels.length !== 6 || visibleOccurrences !== 6) {
+    throw new Error(`Expected all 6 reader-visible snapshot dates to be "${expectedLabel}"; found ${visibleOccurrences}/${visibleLabels.length}.`);
   }
 
   const qualifiedContextCells = extractContextWindowCells(source)

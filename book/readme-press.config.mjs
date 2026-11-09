@@ -125,9 +125,9 @@ export default {
     requireSourceCommit: true,
     fontFamilies: ['Estedad', 'Vazirmatn', 'JetBrainsMono'],
     extractablePhrases: [
-      'از کجا شروع کنم؟',
+      'مدل پاداش',
       'مدل تو قدم اول جمله رو',
-      'پلن رایگان سخاوتمندانه',
+      'پنجره کانتکست',
     ],
     expectedLinks: [
       'https://github.com/3lf/llm-for-humans',
