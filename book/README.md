@@ -138,6 +138,17 @@ npx --prefix book --no-install readme-press pipeline \
 
 نسخه‌های major شماره ۱ با برچسب «ویرایش اول» و نسخه‌های major شماره ۲ با برچسب «ویرایش دوم» ساخته می‌شن. برای major بعدی باید اول نگاشت و نام ویرایش به‌صورت صریح در `book/release-version.mjs` اضافه و بازبینی بشه؛ در غیر این صورت ساخت متوقف می‌شه.
 
+## پیش‌نمایش README رو تازه کن 🖼️
+
+دو تصویر بالای README، خروجی مستقیم صفحه‌های مقدمه و امبدینگ از PDF بررسی‌شده هستن؛ با ساخت PDF خودکار عوض نمی‌شن. قبل از جایگزینی، صفحه‌ها رو ببین تا ادعای قدیمی یا اطلاعات ساخت آزمایشی توشون نباشه. در خروجی فعلی، صفحه‌های PDF شماره ۷ و ۱۴ انتخاب شدن؛ با تغییر صفحه‌بندی، انتخاب رو دوباره بررسی کن:
+
+```bash
+pdftoppm -f 7 -l 7 -singlefile -r 170 -png book/dist/llm-for-humans-book.pdf book/dist/preview-intro
+pdftoppm -f 14 -l 14 -singlefile -r 170 -png book/dist/llm-for-humans-book.pdf book/dist/preview-concepts
+```
+
+بعد از بازبینی، PNGها رو به `images/book-preview-intro.png` و `images/book-preview-concepts.png` منتقل کن. منشأ PDF، صفحه‌ها و هش فایل‌ها توی `book/preview-source.json` ثبت شده؛ موقع تازه‌کردن پیش‌نمایش، اون رو هم با خروجی واقعی هماهنگ کن. پیش‌نمایش، انتشار تازه‌ای از PDF نیست؛ لینک دانلود همچنان به آخرین نسخه منتشرشده می‌ره.
+
 ## نسخه جدید رو منتشر کن 🚀
 
 انتشار کتاب عمداً خودکار نیست. بعد از اینکه تغییرات روی `main` قرار گرفت:

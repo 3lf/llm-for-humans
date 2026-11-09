@@ -1,7 +1,7 @@
 <div dir="rtl">
 
 <div align="center">
-<a href="https://github.com/3lf/llm-for-humans/releases/latest"><img src="images/book-preview.png" alt="کاور و صفحه‌های واقعی کتاب LLM به زبان آدمیزاد" width="100%"></a>
+<a href="https://github.com/3lf/llm-for-humans/releases/latest"><img src="images/book-preview-intro.png" alt="نمونه صفحه مقدمه از متن فعلی کتاب" width="46%"> <img src="images/book-preview-concepts.png" alt="نمونه صفحه امبدینگ از متن فعلی کتاب" width="46%"></a>
 
 <p><strong>کتاب رو چطور می‌خوای بخونی؟ 📥</strong></p>
 
